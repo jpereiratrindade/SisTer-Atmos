@@ -2,7 +2,7 @@ experiment:
   id: A1-E003
   title: Spatial Representation & Operational Sampling
   phase: A1
-  status: proposed
+  status: active
 
 baseline:
   last_verified_milestone: A1-E002
@@ -10,8 +10,8 @@ baseline:
   scientific_oracle: A0-E001
 
 authorization:
-  authorized: false
-  decision: pending_explicit_authorization
+  authorized: true
+  decision: explicitly_authorized
 
 purpose:
   close_a1_scientific_core: true

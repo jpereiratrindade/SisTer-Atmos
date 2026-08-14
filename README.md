@@ -11,8 +11,8 @@
 <!-- praxis-state:start -->
 - Fase atual: **A1 — núcleo científico nativo**.
 - Último marco verificado: **A1-E002 — Product Selection & Temporal Coverage** (`9a321fb`).
-- Próximo marco proposto: **A1-E003 — Spatial Representation & Operational Sampling**.
-- A1-E003 está **proposto e ainda não autorizado**.
+- Próximo marco ativo: **A1-E003 — Spatial Representation & Operational Sampling**.
+- A1-E003 está **constituído, autorizado e ativo**.
 <!-- praxis-state:end -->
 
 A fonte canônica desse estado é `.hoa/project-state.yaml`. O README é uma
