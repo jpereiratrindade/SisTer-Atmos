@@ -1,0 +1,231 @@
+radar:
+  id: sister-atmos-technology-radar
+  version: 1
+  phase_created: A1
+  status: active
+  purpose: >
+    Governar possibilidades tecnológicas do SisTer Atmos sem convertê-las
+    prematuramente em dependências do runtime.
+
+states:
+  ADOPT:
+    meaning: strategic_direction_approved
+  TRIAL:
+    meaning: governed_experiment_allowed
+  ASSESS:
+    meaning: investigate_before_trial
+  HOLD:
+    meaning: explicitly_not_now
+
+principles:
+  domain_before_technology: true
+  evidence_before_adoption: true
+  benchmark_before_optimization: true
+  scientific_semantics_before_similarity: true
+  core_independent_from_infrastructure: true
+  explicit_promotion_decisions: true
+  extensions_by_allowlist: true
+
+items:
+
+  - id: cpp23-strong-domain-types
+    category: language
+    state: ADOPT
+    a1_e001_policy: required
+
+  - id: cpp23-expected
+    category: language
+    state: ADOPT
+    a1_e001_policy: required
+
+  - id: cpp23-span
+    category: language
+    state: ADOPT
+    a1_e001_policy: allowed
+
+  - id: cpp23-ranges
+    category: language
+    state: ADOPT
+    a1_e001_policy: allowed
+
+  - id: cpp23-mdspan
+    category: scientific_computing
+    state: TRIAL
+    active_in_a1_e001: false
+    activation_requires:
+      - multidimensional_scientific_case
+      - toolchain_support_verified
+      - benchmark
+      - ergonomic_evaluation
+
+  - id: data-oriented-layouts
+    category: scientific_computing
+    state: ADOPT
+    a1_e001_policy: design_for
+    rule: benchmark_aos_vs_soa_when_volume_justifies
+
+  - id: compiler-autovectorization
+    category: performance
+    state: TRIAL
+    active_in_a1_e001: false
+    rule: benchmark_before_manual_vectorization
+
+  - id: explicit-simd
+    category: performance
+    state: ASSESS
+    active_in_a1_e001: false
+    activation_requires:
+      - profiling
+      - benchmark
+      - portability_review
+
+  - id: cpu-parallelism
+    category: performance
+    state: ASSESS
+    active_in_a1_e001: false
+    activation_requires:
+      - sufficiently_large_workload
+      - deterministic_reduction_policy
+      - benchmark
+
+  - id: gpu-accelerators
+    category: performance
+    state: HOLD
+    active_in_a1_e001: false
+    architecture_must_not_preclude_future_trial: true
+
+  - id: spatial-neighborhood-graph
+    category: graph
+    state: ASSESS
+    active_in_a1_e001: false
+
+  - id: territorial-graph
+    category: graph
+    state: ASSESS
+    active_in_a1_e001: false
+
+  - id: provenance-dag
+    category: graph
+    state: TRIAL
+    active_in_a1_e001: false
+    candidate_role: immutable_scientific_lineage
+
+  - id: in-memory-typed-graphs
+    category: graph
+    state: TRIAL
+    active_in_a1_e001: false
+    preferred_initial_form:
+      - typed_ids
+      - typed_edges
+      - adjacency_lists
+
+  - id: apache-age
+    category: graph_database
+    state: HOLD
+    active_in_a1_e001: false
+    reasons:
+      - no_demonstrated_query_need
+      - strategic_postgresql_alignment_not_yet_demonstrated
+
+  - id: postgresql
+    category: persistence
+    state: ADOPT
+    active_in_a1_e001: false
+    activation_phase: later_than_native_scientific_core
+    target_policy: supported_stable_major
+
+  - id: postgis-geometry
+    category: spatial_database
+    state: ADOPT
+    active_in_a1_e001: false
+    activation_requires:
+      - persistence_layer
+      - explicit_spatial_use_case
+
+  - id: postgis-raster
+    category: spatial_database
+    state: ASSESS
+    active_in_a1_e001: false
+    compare_against:
+      - native_pixel_geometry
+      - parquet
+      - external_scientific_formats
+      - cpp_processing
+
+  - id: postgis-topology
+    category: spatial_database
+    state: ASSESS
+    active_in_a1_e001: false
+    activation_requires:
+      - explicit_topological_integrity_requirement
+
+  - id: pgvector-semantic
+    category: vector_search
+    state: TRIAL
+    active_in_a1_e001: false
+    activation_requires:
+      - embedding_model_identity
+      - embedding_model_version
+      - provenance
+      - evaluation_dataset
+
+  - id: pgvector-climate-signatures
+    category: scientific_similarity
+    state: TRIAL
+    active_in_a1_e001: false
+    activation_requires:
+      - feature_definition
+      - units
+      - transformation
+      - normalization
+      - missing_data_policy
+      - distance_metric
+      - signature_version
+      - scientific_validation
+
+  - id: arrow
+    category: analytical_data
+    state: ASSESS
+    active_in_a1_e001: false
+    candidate_role: columnar_in_memory_interchange
+
+  - id: parquet
+    category: analytical_storage
+    state: ASSESS
+    active_in_a1_e001: false
+    candidate_role: immutable_or_versioned_large_scientific_datasets
+
+promotion_policy:
+
+  assess_to_trial_requires:
+    - scientific_case
+    - explicit_hypothesis
+    - representative_fixture
+    - success_metric
+
+  trial_to_adopt_requires:
+    - reproducible_experiment
+    - demonstrated_benefit
+    - known_risks
+    - operational_assessment
+    - security_assessment
+    - governed_decision
+
+security:
+  least_privilege: required_when_persistence_enabled
+  parameterized_queries: required_when_persistence_enabled
+  extension_allowlist: required_when_persistence_enabled
+  credentials_in_repository: forbidden
+  migrations_versioned: required_when_persistence_enabled
+  restore_tests: required_when_persistence_enabled
+  scientific_provenance: required
+
+a1_e001_boundary:
+  database_dependency: false
+  postgis_dependency: false
+  pgvector_dependency: false
+  arrow_dependency: false
+  parquet_dependency: false
+  graph_library_dependency: false
+  parallel_runtime_dependency: false
+  gpu_dependency: false

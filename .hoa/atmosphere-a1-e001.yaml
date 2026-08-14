@@ -1,0 +1,59 @@
+experiment:
+  id: A1-E001
+  title: Native precipitation scientific core
+  phase: A1
+  status: designed
+
+purpose:
+  implement_scientific_domain: true
+  implement_infrastructure: false
+  implement_network: false
+  implement_persistence: false
+
+scope:
+  golden_cases:
+    - GC-001
+    - GC-002
+    - GC-003
+
+  invariants:
+    - N02
+    - N03
+    - N13
+    - N14
+    - N15
+
+engineering:
+  language: C++23
+  strong_domain_types: true
+  invalid_state_prevention: true
+  explicit_domain_errors: true
+  expected_for_domain_rejection: true
+  raw_ownership: false
+  mutable_global_state: false
+  hidden_io: false
+  deterministic_core: true
+  warnings_as_errors: true
+  sanitizer_gate: true
+
+dependencies:
+  runtime_python: false
+  runtime_legacy: false
+  h3: false
+  http: false
+  database: false
+  nexo: false
+
+architecture:
+  technology_radar: .hoa/technology-radar.yaml
+  computational_data_horizon: docs/architecture/A-004-computational-data-horizon.md
+  radar_does_not_expand_runtime_scope: true
+  technology_adoption_requires_evidence: true
+
+outputs:
+  specification: specs/domain/native-precipitation-core.md
+  engineering_policy: docs/architecture/A-003-cpp23-engineering-policy.md
+  implementation: src/precipitation
+  public_api: include/sister/atmos/precipitation
+  tests: tests/precipitation_core_tests.cpp
+  gate: scripts/verify_a1_e001.sh
