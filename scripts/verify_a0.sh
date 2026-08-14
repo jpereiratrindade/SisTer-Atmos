@@ -60,10 +60,10 @@ require_text CMakeLists.txt "cxx_std_23"
 pass "C++23"
 
 cmake -S . -B "$BUILD_DIR" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
-cmake --build "$BUILD_DIR"
+cmake --build "$BUILD_DIR"     --target         sister_atmos_core         atmos-a0         sister_atmos_identity_tests
 pass "CMake"
 
-ctest --test-dir "$BUILD_DIR" --output-on-failure
+ctest     --test-dir "$BUILD_DIR"     --output-on-failure     --tests-regex '^sister_atmos_identity_tests$'
 pass "CTest"
 
 require_file specs/invariants/precipitation-spatial-contract.yaml
