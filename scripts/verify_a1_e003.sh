@@ -52,12 +52,65 @@ printf 'root=%s\n' "$ROOT"
 printf 'timestamp=%s\n\n' "$(date --iso-8601=seconds)"
 
 # ------------------------------------------------------------
-# 1. Herança: A1-E002 permanece verdadeiro
+# 1. Herança governada
 # ------------------------------------------------------------
 
-./scripts/verify_a1_e002.sh
+# A cadeia constitucional até A1-E001 continua reproduzível.
+./scripts/verify_a1_e001.sh
 
-pass "A1-E002 permanece íntegro"
+pass "A1-E001 e baselines anteriores permanecem íntegros"
+
+# A1-E002 já é um baseline histórico verificado. Seu gate original
+# é sensível à posição canônica em que A1-E002 era o último marco;
+# portanto, após promoção de um sucessor, preservamos sua prova por
+# manifesto + evidência governada + checksum + ancestralidade.
+A1_E002_MANIFEST=".hoa/atmosphere-a1-e002.yaml"
+A1_E002_EVIDENCE="docs/experiments/evidence/a1-e002/verification.txt"
+A1_E002_CHECKSUM="docs/experiments/evidence/a1-e002/verification.sha256"
+A1_E002_VERIFIED_COMMIT="9a321fb"
+
+require_file "$A1_E002_MANIFEST"
+require_file "$A1_E002_EVIDENCE"
+require_file "$A1_E002_CHECKSUM"
+
+A1_E002_STATUS="$(
+    sed -n \
+        '/^experiment:/,/^[^[:space:]]/ {
+            s/^  status:[[:space:]]*//p
+        }' \
+        "$A1_E002_MANIFEST" |
+        head -n1
+)"
+
+[[ "$A1_E002_STATUS" == "verified" ]] ||
+    fail "baseline A1-E002 não está verified"
+
+require_text     "$A1_E002_EVIDENCE"     "Atmos A1-E002: PASS"
+
+A1_E002_EXPECTED_HASH="$(
+    awk 'NR == 1 { print $1 }' "$A1_E002_CHECKSUM"
+)"
+
+A1_E002_OBSERVED_HASH="$(
+    sha256sum "$A1_E002_EVIDENCE" |
+        awk '{ print $1 }'
+)"
+
+[[ "$A1_E002_EXPECTED_HASH" == "$A1_E002_OBSERVED_HASH" ]] ||
+    fail "checksum da evidência governada A1-E002 inválido"
+
+git merge-base     --is-ancestor     "$A1_E002_VERIFIED_COMMIT"     HEAD ||
+    fail "commit verificado A1-E002 saiu da ancestralidade"
+
+pass "baseline governado A1-E002 preservado"
+
+unset A1_E002_MANIFEST
+unset A1_E002_EVIDENCE
+unset A1_E002_CHECKSUM
+unset A1_E002_VERIFIED_COMMIT
+unset A1_E002_STATUS
+unset A1_E002_EXPECTED_HASH
+unset A1_E002_OBSERVED_HASH
 
 # ------------------------------------------------------------
 # 2. Constituição e autorização
@@ -325,6 +378,11 @@ cmake \
     --parallel 2 \
     --target \
         sister_atmos_precipitation_core \
+        sister_atmos_precipitation_domain_types_tests \
+        sister_atmos_precipitation_native_samples_tests \
+        sister_atmos_precipitation_area_weighting_tests \
+        sister_atmos_product_selection_tests \
+        sister_atmos_temporal_coverage_tests \
         sister_atmos_operational_sampling_tests \
         sister_atmos_surface_eligibility_tests \
         sister_atmos_presentation_aggregation_tests
@@ -333,9 +391,9 @@ ctest \
     --test-dir "$NORMAL_BUILD" \
     --output-on-failure \
     --tests-regex \
-    '^sister_atmos_(operational_sampling|surface_eligibility|presentation_aggregation)_tests$'
+    '^sister_atmos_(precipitation_(domain_types|native_samples|area_weighting)|product_selection|temporal_coverage|operational_sampling|surface_eligibility|presentation_aggregation)_tests$'
 
-pass "build normal A1-E003"
+pass "build normal e regressão integral do núcleo A1"
 
 # ------------------------------------------------------------
 # 10. Estado global/estático mutável
@@ -389,6 +447,11 @@ cmake \
     --parallel 2 \
     --target \
         sister_atmos_precipitation_core \
+        sister_atmos_precipitation_domain_types_tests \
+        sister_atmos_precipitation_native_samples_tests \
+        sister_atmos_precipitation_area_weighting_tests \
+        sister_atmos_product_selection_tests \
+        sister_atmos_temporal_coverage_tests \
         sister_atmos_operational_sampling_tests \
         sister_atmos_surface_eligibility_tests \
         sister_atmos_presentation_aggregation_tests
@@ -399,9 +462,9 @@ ctest \
     --test-dir "$SANITIZED_BUILD" \
     --output-on-failure \
     --tests-regex \
-    '^sister_atmos_(operational_sampling|surface_eligibility|presentation_aggregation)_tests$'
+    '^sister_atmos_(precipitation_(domain_types|native_samples|area_weighting)|product_selection|temporal_coverage|operational_sampling|surface_eligibility|presentation_aggregation)_tests$'
 
-pass "ASan + UBSan A1-E003"
+pass "ASan + UBSan e regressão integral do núcleo A1"
 
 # ------------------------------------------------------------
 # 12. A0 permanece isolado
