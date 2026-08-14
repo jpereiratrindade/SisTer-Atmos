@@ -2,7 +2,7 @@
 
 ## Estado
 
-**Constituído como proposta; ainda não autorizado.**
+**Constituído, autorizado e ativo.**
 
 Baseline verificado:
 

@@ -49,13 +49,13 @@ Limites deliberados:
 
 O marco está **verificado** no commit `9a321fb`.
 
-## Próximo marco proposto — A1-E003
+## Marco ativo — A1-E003
 
 **Spatial Representation & Operational Sampling**.
 
-O marco está constituído como proposta, mas permanece **não autorizado**.
+O marco está **constituído, autorizado e ativo**.
 
-Escopo candidato:
+Escopo autorizado:
 
 - `GC-004` — média das amostras operacionais únicas, sem reivindicar superfície nativa;
 - `GC-005` — produto pontual rejeita superfície sem geometria nativa conhecida;
