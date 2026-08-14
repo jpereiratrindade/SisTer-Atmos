@@ -1,0 +1,20 @@
+version: "1.0"
+domain: precipitation_spatial_contract
+status: baseline
+invariants:
+  - id: N01
+    statement: "Precipitação acumulada pode ser somada no tempo quando os intervalos são compatíveis."
+  - id: N02
+    statement: "Precipitação em mm não pode ser somada espacialmente como se fosse quantidade extensiva."
+  - id: N03
+    statement: "Coordenadas meteorológicas repetidas devem ser deduplicadas antes da coleta equivalente."
+  - id: N04
+    statement: "ERA5 e Best Match não são produtos intercambiáveis e sua identidade deve permanecer explícita."
+  - id: N05
+    statement: "Resolução H3 de amostragem e resolução H3 de apresentação são conceitos distintos."
+  - id: N06
+    statement: "NASA POWER não produz superfície H3 enquanto a grade MERRA-2 não estiver explicitamente representada."
+  - id: N07
+    statement: "Produto solicitado e produto efetivamente utilizado devem permanecer distinguíveis na proveniência."
+  - id: N08
+    statement: "Período solicitado e período efetivamente coberto devem permanecer distinguíveis."

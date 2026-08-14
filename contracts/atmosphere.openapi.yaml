@@ -1,0 +1,23 @@
+openapi: 3.1.0
+info:
+  title: SisTer Atmos API
+  version: 0.0.0-a0
+  description: Contrato inicial; endpoints climáticos ainda não implementados em A0.
+x-sister-status: draft
+paths:
+  /api/health:
+    get:
+      summary: Estado básico do serviço Atmos
+      responses:
+        "200":
+          description: Serviço saudável
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [system_id, status]
+                properties:
+                  system_id:
+                    const: sister_atmos
+                  status:
+                    const: ok

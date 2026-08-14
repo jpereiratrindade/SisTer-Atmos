@@ -1,0 +1,26 @@
+version: "1.0"
+project: sister_atmos
+phase: A0
+title: "Constituição do SisTer Atmos"
+status: scaffolded
+intent:
+  - "registrar identidade e fronteiras antes do porte climático"
+  - "preservar Sister-Clima 2.5 como referência comportamental temporária"
+  - "registrar invariantes científicos antes de providers e infraestrutura"
+  - "estabelecer a fronteira Atmos ↔ Nexo por contrato"
+forbidden_in_a0:
+  - "portar providers meteorológicos"
+  - "implementar H3"
+  - "implementar persistência PostgreSQL"
+  - "reproduzir frontend"
+  - "acoplar runtime ao Praxis"
+gates:
+  - identity
+  - architecture
+  - cpp23
+  - cmake
+  - ctest
+  - scientific_contract
+  - sister_clima_lineage
+  - nexo_boundary
+  - praxis_scaffold

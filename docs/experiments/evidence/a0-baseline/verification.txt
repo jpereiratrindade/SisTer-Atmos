@@ -1,0 +1,29 @@
+=== SisTer Atmos A0 ===
+root=/run/media/jpereiratrindade/labeco10T/dev/cpp/sister-atmos
+timestamp=2026-08-14T07:11:59-03:00
+
+[PASS] identidade
+[PASS] estrutura arquitetural
+[PASS] C++23
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /run/media/jpereiratrindade/labeco10T/dev/cpp/sister-atmos/.build/a0
+[ 33%] Built target sister_atmos_core
+[ 66%] Built target atmos-a0
+[100%] Built target sister_atmos_identity_tests
+[PASS] CMake
+Test project /run/media/jpereiratrindade/labeco10T/dev/cpp/sister-atmos/.build/a0
+    Start 1: sister_atmos_identity_tests
+1/1 Test #1: sister_atmos_identity_tests ......   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec
+[PASS] CTest
+[PASS] contrato científico registrado
+[PASS] linhagem Sister-Clima 2.5
+[PASS] fronteira Nexo
+[PASS] Praxis scaffold
+
+Atmos A0: PASS
+Evidência: /run/media/jpereiratrindade/labeco10T/dev/cpp/sister-atmos/docs/experiments/evidence/a0-baseline/verification.txt

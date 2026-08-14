@@ -1,0 +1,7 @@
+/build/
+/.build/
+/.run/
+CMakeUserPresets.json
+compile_commands.json
+*.swp
+*.tmp

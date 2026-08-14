@@ -1,0 +1,39 @@
+version: "1.0"
+id: sister_atmos
+kind: sister_subsystem
+phase: A0
+purpose: "Inteligência climática e territorial para pesquisa."
+identity:
+  name: "SisTer Atmos"
+  repository: "sister-atmos"
+  role: "subsystem"
+  domain: "climate_intelligence"
+  language: "C++23"
+commitment:
+  - "domínio antes da implementação"
+  - "equivalência comportamental antes da substituição"
+  - "proveniência científica explícita"
+  - "Nexo-aware, não Nexo-owned"
+boundaries:
+  owns:
+    - "produtos e análises climáticas"
+    - "transformações espaciais climáticas"
+    - "proveniência das análises Atmos"
+  does_not_own:
+    - "ciclo de vida de projetos de pesquisa"
+    - "identidade institucional"
+    - "governança de evidências do Nexo"
+    - "infraestrutura de implantação do ecossistema"
+reflexivity:
+  loop:
+    - purpose
+    - expected_state
+    - observed_state
+    - difference
+    - interpretation
+    - recommendation
+    - authorized_decision
+    - action
+    - new_observation
+    - learning
+runtime_dependency_on_praxis: false

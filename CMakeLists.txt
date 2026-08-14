@@ -1,0 +1,46 @@
+cmake_minimum_required(VERSION 3.25)
+
+project(
+  sister_atmos
+  VERSION 0.1.0
+  DESCRIPTION "SisTer Atmos — inteligência climática e territorial para pesquisa"
+  LANGUAGES CXX
+)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+include(CTest)
+
+add_library(sister_atmos_core STATIC
+  src/identity.cpp
+)
+
+target_include_directories(sister_atmos_core
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_compile_features(sister_atmos_core PUBLIC cxx_std_23)
+
+add_executable(atmos-a0
+  src/main.cpp
+)
+
+target_link_libraries(atmos-a0 PRIVATE sister_atmos_core)
+
+if(BUILD_TESTING)
+  add_executable(sister_atmos_identity_tests
+    tests/identity_tests.cpp
+  )
+
+  target_link_libraries(sister_atmos_identity_tests
+    PRIVATE sister_atmos_core
+  )
+
+  add_test(
+    NAME sister_atmos_identity_tests
+    COMMAND sister_atmos_identity_tests
+  )
+endif()

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sister.local/contracts/atmos/nexo_research_integration.schema.json",
+  "title": "Atmos to Nexo Research Evidence Reference",
+  "type": "object",
+  "required": ["project_id", "analysis_id", "evidence_kind"],
+  "properties": {
+    "project_id": { "type": "string", "minLength": 1 },
+    "analysis_id": { "type": "string", "minLength": 1 },
+    "evidence_kind": { "const": "climate_analysis" },
+    "provenance": { "type": "object" },
+    "indicators": { "type": "object" },
+    "spatial_layer": { "type": ["object", "null"] }
+  }
+}

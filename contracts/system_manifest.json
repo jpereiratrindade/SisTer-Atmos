@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "system_id": "sister_atmos",
+  "name": "SisTer Atmos",
+  "repository": "sister-atmos",
+  "role": "subsystem",
+  "domain": "climate_intelligence",
+  "language": "C++23",
+  "description": "Inteligência climática e territorial para pesquisa.",
+  "phase": "A0",
+  "runtime_dependency_on_praxis": false,
+  "integration": {
+    "nexo": {
+      "mode": "contract",
+      "ownership": "independent_subsystem"
+    }
+  }
+}
