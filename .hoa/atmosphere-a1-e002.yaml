@@ -2,7 +2,7 @@ experiment:
   id: A1-E002
   title: Product Selection & Temporal Coverage
   phase: A1
-  status: active
+  status: verified
 
 baseline:
   last_verified_milestone: A1-E001
@@ -78,7 +78,7 @@ dependencies:
 
 verification:
   gate: scripts/verify_a1_e002.sh
-  gate_status: planned
+  gate_status: verified
 
   golden_cases_native_cpp23:
     - GC-006
@@ -100,4 +100,5 @@ outputs:
 promotion:
   target: main
   method: fast_forward
-  status: authorized_not_verified
+  verified_commit: 9a321fb
+  status: verified_pending_promotion

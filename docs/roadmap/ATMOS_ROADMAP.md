@@ -26,7 +26,7 @@ invariantes `N01–N18` e Golden Cases `GC-001–GC-008`.
 Primeira migração científica nativa C++23: tipos fortes, deduplicação,
 conflito e agregação ponderada por área. Golden Cases `GC-001–GC-003` nativos.
 
-## Marco ativo — A1-E002
+## Marco verificado — A1-E002
 
 **Product Selection & Temporal Coverage**.
 
@@ -47,9 +47,9 @@ Limites deliberados:
 - providers, H3, superfície, persistência, rede, frontend e Nexo operacional
   permanecem fora do marco.
 
-O marco está **constituído, autorizado e ativo**.
+O marco está **verificado** no commit `9a321fb`.
 
-## Horizonte seguinte — A1-E003
+## Próximo marco proposto — A1-E003
 
 **Spatial Representation & Operational Sampling**.
 
