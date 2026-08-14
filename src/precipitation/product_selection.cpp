@@ -22,7 +22,7 @@ select_product(
 
     /*
      * O produto solicitado pertence à solicitação/proveniência.
-     * A1-E002 / GC-006 governa, neste momento, somente ERA5
+     * O contrato científico vigente governa, neste momento, somente ERA5
      * como produto solicitado para este modo analítico.
      *
      * Outras combinações não recebem semântica inventada.
@@ -38,7 +38,7 @@ select_product(
     }
 
     /*
-     * A1-E002 / GC-006 governa somente o caso em que
+     * O contrato científico vigente governa somente o caso em que
      * ERA5-Land não disponibiliza a precipitação requerida.
      *
      * O caminho em que essa disponibilidade é verdadeira
@@ -54,7 +54,7 @@ select_product(
 
     return ProductSelection{
         /*
-         * GC-006 caracteriza a escolha como seleção direta,
+         * O contrato caracteriza a escolha como seleção direta,
          * não como fallback. Requested e used permanecem
          * conceitos distintos; requested é preservado
          * exatamente da solicitação.
