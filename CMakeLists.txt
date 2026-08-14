@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(CTest)
+include(cmake/ProjectOptions.cmake)
 
 add_library(sister_atmos_core STATIC
   src/identity.cpp
@@ -23,12 +24,14 @@ target_include_directories(sister_atmos_core
 )
 
 target_compile_features(sister_atmos_core PUBLIC cxx_std_23)
+sister_atmos_apply_project_options(sister_atmos_core)
 
 add_executable(atmos-a0
   src/main.cpp
 )
 
 target_link_libraries(atmos-a0 PRIVATE sister_atmos_core)
+sister_atmos_apply_project_options(atmos-a0)
 
 if(BUILD_TESTING)
   add_executable(sister_atmos_identity_tests
@@ -37,6 +40,10 @@ if(BUILD_TESTING)
 
   target_link_libraries(sister_atmos_identity_tests
     PRIVATE sister_atmos_core
+  )
+
+  sister_atmos_apply_project_options(
+    sister_atmos_identity_tests
   )
 
   add_test(
