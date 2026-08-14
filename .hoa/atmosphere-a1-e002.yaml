@@ -2,7 +2,7 @@ experiment:
   id: A1-E002
   title: Product Selection & Temporal Coverage
   phase: A1
-  status: proposed
+  status: active
 
 baseline:
   last_verified_milestone: A1-E001
@@ -10,8 +10,9 @@ baseline:
   scientific_oracle: A0-E001
 
 authorization:
-  authorized: false
-  decision: pending
+  authorized: true
+  authorized_on: "2026-08-14"
+  decision: execute_scientific_core
 
 purpose:
   implement_scientific_domain: true
@@ -99,4 +100,4 @@ outputs:
 promotion:
   target: main
   method: fast_forward
-  status: not_authorized
+  status: authorized_not_verified

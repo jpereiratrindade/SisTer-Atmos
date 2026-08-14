@@ -89,17 +89,72 @@ readme = readme_path.read_text(encoding="utf-8")
 required_readme = [
     f"Fase atual: **{phase}",
     f"Último marco verificado: **{last_milestone}",
-    f"Próximo marco proposto: **{next_milestone}",
+    next_milestone,
     ".hoa/project-state.yaml",
 ]
-for text in required_readme:
-    if text not in readme:
-        fail(f"README não reflete estado canônico: {text}")
-passed("README reflete o estado canônico")
+for required_text in required_readme:
+    if required_text not in readme:
+        fail(
+            f"README não reflete estado canônico: {required_text}"
+        )
 
-if next_status != "proposed" or next_authorized != "false":
-    fail("próximo marco deve permanecer proposto e não autorizado neste fechamento")
-passed("próximo marco permanece explicitamente não autorizado")
+if next_status == "proposed":
+    if next_authorized != "false":
+        fail("marco proposed não pode estar autorizado")
+
+    human_state = (
+        f"{next_milestone} está "
+        "**proposto e ainda não autorizado**"
+    )
+
+elif next_status == "active":
+    if next_authorized != "true":
+        fail("marco active exige autorização explícita")
+
+    human_state = (
+        f"{next_milestone} está "
+        "**constituído, autorizado e ativo**"
+    )
+
+    active_manifest = (
+        ROOT / ".hoa" /
+        f"atmosphere-{next_milestone.lower()}.yaml"
+    )
+
+    if not active_manifest.is_file():
+        fail(
+            "marco ativo sem manifesto: "
+            f"{active_manifest.relative_to(ROOT)}"
+        )
+
+    if scalar(active_manifest, "status") != "active":
+        fail(
+            f"manifesto do marco ativo não está active: "
+            f"{next_milestone}"
+        )
+
+    if scalar(active_manifest, "authorized") != "true":
+        fail(
+            f"manifesto do marco ativo não está autorizado: "
+            f"{next_milestone}"
+        )
+
+elif next_status == "blocked":
+    human_state = next_milestone
+
+elif next_status == "none":
+    if next_authorized != "false":
+        fail("next_milestone none não pode estar autorizado")
+    human_state = next_milestone
+
+else:
+    fail(f"estado de próximo marco inválido: {next_status}")
+
+if human_state not in readme:
+    fail("README não representa status/autorização do próximo marco")
+
+passed("README reflete o estado canônico")
+passed("transição/autorização do próximo marco é válida")
 
 experiment_file = ROOT / ".hoa" / f"atmosphere-{last_milestone.lower()}.yaml"
 if not experiment_file.is_file():

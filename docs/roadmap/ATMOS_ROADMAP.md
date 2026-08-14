@@ -26,18 +26,28 @@ invariantes `N01–N18` e Golden Cases `GC-001–GC-008`.
 Primeira migração científica nativa C++23: tipos fortes, deduplicação,
 conflito e agregação ponderada por área. Golden Cases `GC-001–GC-003` nativos.
 
-## Próximo marco proposto — A1-E002
+## Marco ativo — A1-E002
 
 **Product Selection & Temporal Coverage**.
 
-Escopo candidato:
+Escopo autorizado:
 
 - identidade de produto solicitado e efetivamente utilizado;
-- seleção/fallback cientificamente explícitos;
+- seleção cientificamente explícita;
+- estado de fallback explicitamente representável;
 - período solicitado versus período efetivamente coberto;
-- `GC-006` e `GC-007`.
+- lacunas e completude temporal explícitas;
+- `GC-006` e `GC-007`;
+- invariantes `N04`, `N07`, `N08`, `N12` e `N17`.
 
-O marco permanece **proposto, não autorizado**, até sua constituição formal.
+Limites deliberados:
+
+- GC-006 verifica seleção direta, não fallback positivo;
+- N17 constitui contexto comum de produto/período sem implementar views;
+- providers, H3, superfície, persistência, rede, frontend e Nexo operacional
+  permanecem fora do marco.
+
+O marco está **constituído, autorizado e ativo**.
 
 ## Horizonte seguinte — A1-E003
 

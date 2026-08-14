@@ -2,7 +2,7 @@
 
 ## Estado
 
-**Constituído como proposta. Ainda não autorizado para implementação.**
+**Constituído, autorizado e ativo.**
 
 Baseline verificado:
 
@@ -60,7 +60,9 @@ A1-E002 somente poderá tornar-se `verified` após:
 
 ## Autorização
 
-**Pendente.**
+**Autorizado em 2026-08-14.**
 
-A existência deste documento constitui o experimento, mas não autoriza sua
-implementação.
+Está autorizada a implementação do núcleo científico delimitado por este
+experimento.
+
+A autorização não constitui verificação nem promoção.
