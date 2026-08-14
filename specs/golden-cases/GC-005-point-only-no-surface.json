@@ -1,0 +1,19 @@
+{
+  "id": "GC-005",
+  "title": "Point-only product cannot claim an H3 meteorological surface",
+  "experiment": "A0-E001",
+  "ancestral_test": "test_point_only_product_cannot_generate_h3_surface",
+  "invariants": [
+    "N06",
+    "N10"
+  ],
+  "input": {
+    "product": "nasa_power_merra2",
+    "native_grid_geometry_available": false,
+    "requested_representation": "h3_surface"
+  },
+  "expected": {
+    "accepted": false,
+    "error_kind": "native_geometry_required"
+  }
+}

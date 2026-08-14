@@ -1,0 +1,66 @@
+contract:
+  id: sister-atmos/legacy-derived-invariants
+  source: Sister-Clima-v2.5
+  experiment: A0-E001
+
+invariants:
+
+  - id: N09
+    name: h3_does_not_create_meteorological_resolution
+    statement: >
+      H3 pode atuar como amostragem, índice e síntese, mas não cria
+      informação meteorológica entre pixels nativos.
+
+  - id: N10
+    name: native_geometry_required_for_surface
+    statement: >
+      Uma superfície meteorológica somente pode ser reconstruída quando
+      a geometria da grade nativa do produto for conhecida.
+
+  - id: N11
+    name: product_change_rebuilds_spatial_chain
+    statement: >
+      Mudança de produto exige reconstrução da malha de amostragem,
+      coordenadas, consultas, deduplicação, agregação, GeoJSON e proveniência.
+
+  - id: N12
+    name: common_effective_temporal_coverage
+    statement: >
+      O período efetivo deve corresponder às datas disponíveis em todas
+      as células nativas únicas participantes da análise.
+
+  - id: N13
+    name: duplicate_native_cell_has_no_additional_weight
+    statement: >
+      Consultas repetidas que retornam a mesma célula meteorológica nativa
+      representam uma única observação espacial efetiva.
+
+  - id: N14
+    name: conflicting_native_cell_values_are_invalid
+    statement: >
+      Valores divergentes atribuídos à mesma célula meteorológica nativa
+      invalidam o resultado.
+
+  - id: N15
+    name: consolidated_mode_uses_area_weighted_mean
+    statement: >
+      No modo consolidado a precipitação espacial é ponderada pela área
+      representada na interseção pixel nativo × H3 × território.
+
+  - id: N16
+    name: operational_mode_uses_unique_sample_mean
+    statement: >
+      No modo operacional a síntese espacial é a média simples das
+      coordenadas Best Match únicas e não representa média areal.
+
+  - id: N17
+    name: analytical_views_share_product_and_effective_period
+    statement: >
+      Série, indicadores e mapa de um mesmo modo analítico devem utilizar
+      o mesmo produto meteorológico e o mesmo período efetivo.
+
+  - id: N18
+    name: adaptive_sampling_is_explicit_provenance
+    statement: >
+      Qualquer adaptação da resolução de amostragem deve ser explicitamente
+      registrada em proveniência.

@@ -1,0 +1,28 @@
+SisTer Atmos — A0-E001
+Oracle qualification baseline
+
+legacy_system=Sister-Clima
+legacy_role=legacy_reference
+release_tag=v2.5
+tag_object=d96a466cc42bb044eef16c8b2b5c1ada54235871
+release_commit=279ba3e9b084020c23c36e63bec933f1dbc705e6
+observed_head=d8e89bb61da3d54936b17e2f6185f309792ef771
+
+scientific_diff_v2.5_to_observed_head=none
+scientific_diff_scope=*.py,docs/**,contracts/**,data/**
+
+observed_python_runtime=3.14.6
+
+test_framework=unittest
+test_count=34
+test_result=PASS
+
+legacy_worktree_initially_clean=false
+legacy_preexisting_changes=.streamlit/config.toml,.continue/,ops/,scripts/
+legacy_worktree_changed_by_observation=false
+legacy_worktree_changed_by_tests=false
+
+atmos_changed_by_observation=false
+atmos_changed_by_oracle_tests=false
+
+qualification=scientific_regression_oracle

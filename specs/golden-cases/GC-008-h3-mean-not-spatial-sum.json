@@ -1,0 +1,21 @@
+{
+  "id": "GC-008",
+  "title": "H3 precipitation aggregation uses spatial mean, never spatial sum",
+  "experiment": "A0-E001",
+  "ancestral_test": "test_h3_uses_mean_of_point_accumulations_instead_of_spatial_sum",
+  "invariants": [
+    "N02"
+  ],
+  "input": {
+    "display_h3_index": "same-cell",
+    "point_accumulations_mm": [
+      10.0,
+      30.0
+    ]
+  },
+  "expected": {
+    "monitored_points": 2,
+    "mean_accumulation_mm": 20.0,
+    "forbidden_spatial_sum_mm": 40.0
+  }
+}

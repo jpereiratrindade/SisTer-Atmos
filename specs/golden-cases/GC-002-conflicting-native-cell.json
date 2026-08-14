@@ -1,0 +1,29 @@
+{
+  "id": "GC-002",
+  "title": "Conflicting values for one native cell are invalid",
+  "experiment": "A0-E001",
+  "ancestral_test": "test_divergent_values_for_same_native_cell_are_rejected",
+  "invariants": [
+    "N14"
+  ],
+  "input": {
+    "samples": [
+      {
+        "model": "era5",
+        "native_latitude": -30.0,
+        "native_longitude": -51.0,
+        "total_mm": 12.0
+      },
+      {
+        "model": "era5",
+        "native_latitude": -30.0,
+        "native_longitude": -51.0,
+        "total_mm": 13.0
+      }
+    ]
+  },
+  "expected": {
+    "accepted": false,
+    "error_kind": "conflicting_native_cell_values"
+  }
+}

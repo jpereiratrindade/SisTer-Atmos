@@ -1,0 +1,29 @@
+{
+  "id": "GC-003",
+  "title": "Consolidated precipitation uses represented-area weighting",
+  "experiment": "A0-E001",
+  "ancestral_test": "test_precipitation_uses_intersection_weighted_mean",
+  "invariants": [
+    "N02",
+    "N15"
+  ],
+  "input": {
+    "contributions": [
+      {
+        "precipitation_mm": 10.0,
+        "represented_area": 1.0
+      },
+      {
+        "precipitation_mm": 30.0,
+        "represented_area": 0.5
+      }
+    ]
+  },
+  "expected": {
+    "precipitation_mm": 16.666666666666668,
+    "represented_area": 1.5,
+    "contributors": 2,
+    "aggregation": "area_weighted_mean",
+    "tolerance": 1e-09
+  }
+}

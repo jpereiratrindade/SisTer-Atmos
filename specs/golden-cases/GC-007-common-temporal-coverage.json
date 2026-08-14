@@ -1,0 +1,50 @@
+{
+  "id": "GC-007",
+  "title": "Temporal accumulation uses dates common to all native cells",
+  "experiment": "A0-E001",
+  "ancestral_test": "test_temporal_accumulation_uses_only_dates_common_to_all_cells",
+  "invariants": [
+    "N08",
+    "N12",
+    "N17"
+  ],
+  "input": {
+    "requested_period": {
+      "start": "2026-07-01",
+      "end": "2026-07-03"
+    },
+    "native_cells": [
+      {
+        "cell": "A",
+        "daily_mm": {
+          "2026-07-01": 1.0,
+          "2026-07-02": 2.0,
+          "2026-07-03": null
+        }
+      },
+      {
+        "cell": "B",
+        "daily_mm": {
+          "2026-07-01": 10.0,
+          "2026-07-02": 20.0,
+          "2026-07-03": 30.0
+        }
+      }
+    ]
+  },
+  "expected": {
+    "cell_totals_mm": [
+      3.0,
+      30.0
+    ],
+    "available_days": 2,
+    "missing_dates": [
+      "2026-07-03"
+    ],
+    "effective_period": {
+      "start": "2026-07-01",
+      "end": "2026-07-02"
+    },
+    "complete": false
+  }
+}

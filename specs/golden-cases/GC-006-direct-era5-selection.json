@@ -1,0 +1,20 @@
+{
+  "id": "GC-006",
+  "title": "ERA5 is selected directly for consolidated precipitation",
+  "experiment": "A0-E001",
+  "ancestral_test": "test_era5_is_selected_directly_for_precipitation",
+  "invariants": [
+    "N04",
+    "N07"
+  ],
+  "input": {
+    "analysis_mode": "consolidated_precipitation",
+    "era5_land_precipitation_available": false
+  },
+  "expected": {
+    "used_model": "era5",
+    "fallback_used": false,
+    "selection_semantics": "direct_product_selection",
+    "selection_reason_contains": "não disponibiliza precipitação"
+  }
+}

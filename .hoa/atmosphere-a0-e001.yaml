@@ -1,0 +1,36 @@
+experiment:
+  id: A0-E001
+  title: Sister-Clima scientific behavioral baseline
+  phase: A0
+  status: qualified
+
+purpose:
+  establish_legacy_oracle: true
+  port_climate_logic: false
+  modify_legacy: false
+
+oracle:
+  system: Sister-Clima
+  release_tag: v2.5
+  release_commit: 279ba3e9b084020c23c36e63bec933f1dbc705e6
+  observed_head: d8e89bb61da3d54936b17e2f6185f309792ef771
+  scientific_equivalence_in_observed_scope: true
+  scientific_diff_scope:
+    - "*.py"
+    - "docs/**"
+    - "contracts/**"
+    - "data/**"
+
+qualification:
+  tests: 34
+  result: PASS
+  legacy_mutation: false
+  atmos_mutation: false
+
+outputs:
+  invariants: specs/invariants/legacy-derived-invariants.yaml
+  golden_cases: specs/golden-cases
+  evidence: docs/experiments/evidence/a0-e001/oracle-baseline.txt
+
+runtime_dependency_on_legacy: false
+runtime_dependency_on_python: false

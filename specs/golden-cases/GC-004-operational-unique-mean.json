@@ -1,0 +1,32 @@
+{
+  "id": "GC-004",
+  "title": "Operational Best Match uses mean of unique samples",
+  "experiment": "A0-E001",
+  "ancestral_test": "test_operational_sampling_uses_mean_and_declares_no_native_surface",
+  "invariants": [
+    "N09",
+    "N16"
+  ],
+  "input": {
+    "samples": [
+      {
+        "model": "best_match_dynamic",
+        "native_latitude": -30.0,
+        "native_longitude": -51.0,
+        "total_mm": 10.0
+      },
+      {
+        "model": "best_match_dynamic",
+        "native_latitude": -30.001,
+        "native_longitude": -51.001,
+        "total_mm": 30.0
+      }
+    ]
+  },
+  "expected": {
+    "precipitation_mm": 20.0,
+    "unique_sample_points": 2,
+    "surface_kind": "operational_sampling_not_native_pixel_surface",
+    "aggregation": "unweighted_mean_unique_best_match_sample_points"
+  }
+}
