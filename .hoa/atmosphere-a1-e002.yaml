@@ -1,0 +1,102 @@
+experiment:
+  id: A1-E002
+  title: Product Selection & Temporal Coverage
+  phase: A1
+  status: proposed
+
+baseline:
+  last_verified_milestone: A1-E001
+  last_verified_commit: 7dc0115
+  scientific_oracle: A0-E001
+
+authorization:
+  authorized: false
+  decision: pending
+
+purpose:
+  implement_scientific_domain: true
+  implement_infrastructure: false
+  implement_network: false
+  implement_persistence: false
+  implement_providers: false
+  implement_frontend: false
+  implement_h3: false
+
+scope:
+  golden_cases:
+    - GC-006
+    - GC-007
+
+  invariants:
+    - N04
+    - N07
+    - N08
+    - N12
+    - N17
+
+scientific_contract:
+  product_selection:
+    requested_product_distinct_from_used_product: true
+    product_identity_explicit: true
+    selection_semantics_explicit: true
+    fallback_state_explicit: true
+    positive_fallback_verified_by_gc006: false
+
+  temporal_coverage:
+    requested_period_distinct_from_effective_period: true
+    common_dates_across_unique_native_cells: true
+    missing_dates_explicit: true
+    completeness_explicit: true
+
+  analytical_consistency:
+    common_product_and_effective_period_context: true
+    analytical_views_implemented_here: false
+
+engineering:
+  language: C++23
+  strong_domain_types: true
+  invalid_state_prevention: true
+  explicit_domain_errors: true
+  expected_for_domain_rejection: true
+  raw_ownership: false
+  mutable_global_state: false
+  hidden_io: false
+  deterministic_core: true
+  warnings_as_errors: true
+  sanitizer_gate: true
+
+dependencies:
+  runtime_python: false
+  runtime_legacy: false
+  providers_real: false
+  h3: false
+  http: false
+  database: false
+  nexo: false
+  frontend: false
+
+verification:
+  gate: scripts/verify_a1_e002.sh
+  gate_status: planned
+
+  golden_cases_native_cpp23:
+    - GC-006
+    - GC-007
+
+  limitations:
+    - GC-006 verifies direct ERA5 selection with fallback_used=false
+    - positive fallback requires separate governed evidence
+    - N17 establishes shared analytical context without implementing views
+
+outputs:
+  specification: specs/domain/product-selection-temporal-coverage.md
+  tests:
+    - tests/product_selection_tests.cpp
+    - tests/temporal_coverage_tests.cpp
+  gate: scripts/verify_a1_e002.sh
+  evidence: docs/experiments/evidence/a1-e002/verification.txt
+
+promotion:
+  target: main
+  method: fast_forward
+  status: not_authorized
