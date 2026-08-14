@@ -2,7 +2,14 @@
 
 ## Estado
 
-**Constituído, autorizado e ativo.**
+**Verificado.**
+
+Commit científico verificado: `fad18c1`.
+
+Gate: `scripts/verify_a1_e003.sh`.
+
+Evidência governada:
+`docs/experiments/evidence/a1-e003/verification.txt`.
 
 Baseline verificado:
 

@@ -10,9 +10,9 @@
 
 <!-- praxis-state:start -->
 - Fase atual: **A1 — núcleo científico nativo**.
-- Último marco verificado: **A1-E002 — Product Selection & Temporal Coverage** (`9a321fb`).
-- Próximo marco ativo: **A1-E003 — Spatial Representation & Operational Sampling**.
-- A1-E003 está **constituído, autorizado e ativo**.
+- Último marco verificado: **A1-E003 — Spatial Representation & Operational Sampling** (`fad18c1`).
+- Próximo marco proposto: **A2-MVP-001 — Governed Precipitation Explorer**.
+- A2-MVP-001 está **proposto e ainda não autorizado**.
 <!-- praxis-state:end -->
 
 A fonte canônica desse estado é `.hoa/project-state.yaml`. O README é uma
@@ -25,9 +25,12 @@ visão humana e deve ser validado contra esse manifesto.
 - `N01–N18` e `GC-001–GC-008`: baseline científico;
 - A1-E001: `GC-001–GC-003` implementados e testados nativamente em C++23;
 - A1-E002: `GC-006–GC-007` implementados e testados nativamente em C++23;
+- A1-E003: `GC-004`, `GC-005` e `GC-008` implementados e testados nativamente em C++23;
+- `GC-001–GC-008` estão nativos no núcleo científico A1;
 - produto solicitado/usado e período solicitado/efetivo permanecem explícitos;
+- amostragem operacional, elegibilidade de superfície e agregação de apresentação permanecem semanticamente distintas;
 - warnings-as-errors, ASan e UBSan: gateados;
-- runtime sem dependência de Python, Sister-Clima, H3, banco, HTTP ou frontend no A1-E002.
+- runtime sem dependência de Python, Sister-Clima, H3, banco, HTTP ou frontend no A1.
 
 ## Princípio de migração
 

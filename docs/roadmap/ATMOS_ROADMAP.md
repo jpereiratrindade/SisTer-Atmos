@@ -49,13 +49,13 @@ Limites deliberados:
 
 O marco está **verificado** no commit `9a321fb`.
 
-## Marco ativo — A1-E003
+## Marco verificado — A1-E003
 
 **Spatial Representation & Operational Sampling**.
 
-O marco está **constituído, autorizado e ativo**.
+O marco está **verificado** no commit `fad18c1`.
 
-Escopo autorizado:
+Escopo verificado:
 
 - `GC-004` — média das amostras operacionais únicas, sem reivindicar superfície nativa;
 - `GC-005` — produto pontual rejeita superfície sem geometria nativa conhecida;
@@ -65,7 +65,7 @@ Escopo autorizado:
 
 A1-E003 deve encerrar a fase A1 ao tornar nativos os oito Golden Cases do baseline.
 
-## Primeiro horizonte de produto — A2-MVP-001
+## Próximo marco proposto — A2-MVP-001
 
 **Governed Precipitation Explorer**.
 
@@ -89,7 +89,7 @@ Escopo mínimo esperado:
 Persistência, autenticação, múltiplos providers e integração operacional com Nexo
 não são pré-condições do primeiro MVP, salvo evidência posterior em contrário.
 
-A2-MVP-001 permanece apenas como horizonte e **não está autorizado**.
+A2-MVP-001 está **proposto e ainda não autorizado**.
 
 ## Fronteira posterior ao núcleo científico
 

@@ -2,7 +2,7 @@ experiment:
   id: A1-E003
   title: Spatial Representation & Operational Sampling
   phase: A1
-  status: active
+  status: verified
 
 baseline:
   last_verified_milestone: A1-E002
@@ -92,7 +92,8 @@ dependencies:
   frontend: false
 
 verification:
-  future_gate: scripts/verify_a1_e003.sh
+  gate: scripts/verify_a1_e003.sh
+  gate_status: verified
   golden_cases_native_cpp23:
     - GC-004
     - GC-005
@@ -103,8 +104,23 @@ verification:
     - "Identidade de coordenadas é assumida canônica na entrada do núcleo; normalização pertence ao provider futuro"
     - "N18 exige proveniência explícita se houver adaptação; não obriga algoritmo adaptativo neste marco"
 
+outputs:
+  specification: specs/domain/spatial-representation-operational-sampling.md
+  tests:
+    - tests/operational_sampling_tests.cpp
+    - tests/surface_eligibility_tests.cpp
+    - tests/presentation_aggregation_tests.cpp
+  gate: scripts/verify_a1_e003.sh
+  evidence: docs/experiments/evidence/a1-e003/verification.txt
+
+promotion:
+  target: main
+  method: fast_forward
+  verified_commit: fad18c1
+  status: verified_pending_promotion
+
 next_horizon:
   id: A2-MVP-001
   title: Governed Precipitation Explorer
-  status: horizon_only
+  status: proposed
   authorized: false
