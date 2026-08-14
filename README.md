@@ -24,8 +24,10 @@ visão humana e deve ser validado contra esse manifesto.
 - A0-E001 — oráculo científico Sister-Clima: qualificado;
 - `N01–N18` e `GC-001–GC-008`: baseline científico;
 - A1-E001: `GC-001–GC-003` implementados e testados nativamente em C++23;
+- A1-E002: `GC-006–GC-007` implementados e testados nativamente em C++23;
+- produto solicitado/usado e período solicitado/efetivo permanecem explícitos;
 - warnings-as-errors, ASan e UBSan: gateados;
-- runtime sem dependência de Python, Sister-Clima, H3, banco ou HTTP no A1-E001.
+- runtime sem dependência de Python, Sister-Clima, H3, banco, HTTP ou frontend no A1-E002.
 
 ## Princípio de migração
 

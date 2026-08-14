@@ -1,0 +1,110 @@
+experiment:
+  id: A1-E003
+  title: Spatial Representation & Operational Sampling
+  phase: A1
+  status: proposed
+
+baseline:
+  last_verified_milestone: A1-E002
+  last_verified_commit: 9a321fb
+  scientific_oracle: A0-E001
+
+authorization:
+  authorized: false
+  decision: pending_explicit_authorization
+
+purpose:
+  close_a1_scientific_core: true
+  implement_scientific_domain: true
+  implement_infrastructure: false
+  implement_network: false
+  implement_persistence: false
+  implement_providers: false
+  implement_frontend: false
+  require_h3_runtime: false
+
+scope:
+  golden_cases:
+    - GC-004
+    - GC-005
+    - GC-008
+
+  invariants:
+    - N02
+    - N05
+    - N06
+    - N09
+    - N10
+    - N16
+    - N18
+
+scientific_questions:
+  - "Como distinguir amostragem operacional de superfície meteorológica nativa?"
+  - "Quando uma representação H3 é cientificamente admissível?"
+  - "Como impedir soma espacial de precipitação em mm em buckets de apresentação?"
+  - "Como distinguir resolução de amostragem da resolução de apresentação?"
+  - "Como registrar adaptação de amostragem sem ocultá-la na proveniência?"
+  - "Qual identidade canônica é exigida para amostras espaciais antes da deduplicação?"
+
+scientific_contract:
+  operational_sampling:
+    unique_sample_points: true
+    aggregation: unweighted_mean
+    native_surface_claimed: false
+
+  surface_eligibility:
+    native_grid_geometry_required: true
+    point_only_product_must_reject_surface: true
+
+  presentation_aggregation:
+    precipitation_spatial_sum_forbidden: true
+    h3_bucket_uses_spatial_mean: true
+    h3_runtime_required_for_semantic_test: false
+
+  spatial_resolution:
+    sampling_resolution_distinct_from_presentation_resolution: true
+    adaptive_sampling_provenance_explicit: true
+
+  spatial_identity:
+    core_inputs_are_canonical: true
+    provider_normalization_outside_core: true
+    fuzzy_coordinate_identity_in_core: false
+
+engineering:
+  language: C++23
+  strong_domain_types: true
+  explicit_domain_errors: true
+  deterministic_core: true
+  raw_ownership: false
+  mutable_global_state: false
+  hidden_io: false
+  warnings_as_errors: true
+  sanitizer_gate: true
+
+dependencies:
+  runtime_python: false
+  runtime_legacy: false
+  providers_real: false
+  h3_library: false
+  http: false
+  database: false
+  nexo: false
+  frontend: false
+
+verification:
+  future_gate: scripts/verify_a1_e003.sh
+  golden_cases_native_cpp23:
+    - GC-004
+    - GC-005
+    - GC-008
+
+  proof_boundary:
+    - "A1-E003 prova semântica espacial; não prova provider, H3 runtime, API ou frontend"
+    - "Identidade de coordenadas é assumida canônica na entrada do núcleo; normalização pertence ao provider futuro"
+    - "N18 exige proveniência explícita se houver adaptação; não obriga algoritmo adaptativo neste marco"
+
+next_horizon:
+  id: A2-MVP-001
+  title: Governed Precipitation Explorer
+  status: horizon_only
+  authorized: false

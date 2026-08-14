@@ -53,8 +53,43 @@ O marco está **verificado** no commit `9a321fb`.
 
 **Spatial Representation & Operational Sampling**.
 
-Escopo candidato: `GC-004`, `GC-005`, `GC-008`, distinguindo amostragem,
-superfície meteorológica e representação territorial/H3.
+O marco está constituído como proposta, mas permanece **não autorizado**.
+
+Escopo candidato:
+
+- `GC-004` — média das amostras operacionais únicas, sem reivindicar superfície nativa;
+- `GC-005` — produto pontual rejeita superfície sem geometria nativa conhecida;
+- `GC-008` — bucket H3 usa média espacial, nunca soma espacial de precipitação em mm;
+- invariantes `N02`, `N05`, `N06`, `N09`, `N10`, `N16` e `N18`;
+- identidade espacial canônica na entrada do núcleo, deixando normalização entre providers para a camada de aquisição.
+
+A1-E003 deve encerrar a fase A1 ao tornar nativos os oito Golden Cases do baseline.
+
+## Primeiro horizonte de produto — A2-MVP-001
+
+**Governed Precipitation Explorer**.
+
+Depois de A1-E003, a primeira fatia vertical do Atmos deverá permitir uma análise
+de precipitação utilizável e rastreável, conectando aquisição governada, núcleo
+científico, API e frontend leve.
+
+Escopo mínimo esperado:
+
+- um caminho de aquisição meteorológica explicitamente governado;
+- território e período como entrada;
+- produto solicitado e produto usado visíveis;
+- período solicitado e período efetivo visíveis;
+- precipitação e representação espacial compatíveis com o produto;
+- proveniência científica retornada junto ao resultado;
+- `GET /api/health`;
+- um endpoint de análise de precipitação;
+- frontend HTML/CSS/JS sem framework pesado;
+- execução local independente de Nexo e Praxis.
+
+Persistência, autenticação, múltiplos providers e integração operacional com Nexo
+não são pré-condições do primeiro MVP, salvo evidência posterior em contrário.
+
+A2-MVP-001 permanece apenas como horizonte e **não está autorizado**.
 
 ## Fronteira posterior ao núcleo científico
 
