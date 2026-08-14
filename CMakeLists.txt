@@ -28,6 +28,7 @@ sister_atmos_apply_project_options(sister_atmos_core)
 
 add_library(sister_atmos_precipitation_core STATIC
   src/precipitation/domain_types.cpp
+  src/precipitation/native_samples.cpp
 )
 
 target_include_directories(sister_atmos_precipitation_core
@@ -86,5 +87,24 @@ if(BUILD_TESTING)
   add_test(
     NAME sister_atmos_precipitation_domain_types_tests
     COMMAND sister_atmos_precipitation_domain_types_tests
+  )
+
+  add_executable(
+    sister_atmos_precipitation_native_samples_tests
+    tests/precipitation_native_samples_tests.cpp
+  )
+
+  target_link_libraries(
+    sister_atmos_precipitation_native_samples_tests
+    PRIVATE sister_atmos_precipitation_core
+  )
+
+  sister_atmos_apply_project_options(
+    sister_atmos_precipitation_native_samples_tests
+  )
+
+  add_test(
+    NAME sister_atmos_precipitation_native_samples_tests
+    COMMAND sister_atmos_precipitation_native_samples_tests
   )
 endif()
