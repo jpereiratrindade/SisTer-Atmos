@@ -2,9 +2,9 @@
 
 **SisTer Atmos — inteligência climática e territorial para pesquisa.**
 
-`system_id`: `sister_atmos`  
-Linguagem: C++23  
-Papel: subsistema independente do ecossistema SisTer.
+- `system_id`: `sister_atmos`
+- Linguagem: C++23
+- Papel: subsistema independente do ecossistema SisTer.
 
 ## Estado atual
 
