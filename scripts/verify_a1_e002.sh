@@ -60,7 +60,7 @@ printf 'timestamp=%s\n\n' "$(date --iso-8601=seconds)"
 pass "A1-E001 permanece íntegro"
 
 # ------------------------------------------------------------
-# 2. Constituição e autorização
+# 2. Constituição, autorização e ciclo de vida
 # ------------------------------------------------------------
 
 require_file .hoa/atmosphere-a1-e002.yaml
@@ -68,7 +68,6 @@ require_file specs/domain/product-selection-temporal-coverage.md
 require_file docs/experiments/A1-E002-product-selection-temporal-coverage.md
 
 require_text .hoa/atmosphere-a1-e002.yaml "id: A1-E002"
-require_text .hoa/atmosphere-a1-e002.yaml "status: active"
 require_text .hoa/atmosphere-a1-e002.yaml "authorized: true"
 require_text .hoa/atmosphere-a1-e002.yaml "GC-006"
 require_text .hoa/atmosphere-a1-e002.yaml "GC-007"
@@ -77,16 +76,39 @@ for invariant in N04 N07 N08 N12 N17; do
     require_text .hoa/atmosphere-a1-e002.yaml "$invariant"
 done
 
-require_text .hoa/project-state.yaml \
-    "next_milestone: A1-E002"
+EXPERIMENT_STATUS="$(
+    sed -n         '/^experiment:/,/^[^[:space:]]/ {
+            s/^  status:[[:space:]]*//p
+        }'         .hoa/atmosphere-a1-e002.yaml |
+        head -n1
+)"
 
-require_text .hoa/project-state.yaml \
-    "next_milestone_status: active"
+[[ -n "$EXPERIMENT_STATUS" ]] ||
+    fail "status de A1-E002 ausente"
 
-require_text .hoa/project-state.yaml \
-    "next_milestone_authorized: true"
+case "$EXPERIMENT_STATUS" in
+    active)
+        require_text .hoa/project-state.yaml             "next_milestone: A1-E002"
 
-pass "A1-E002 constituído e autorizado"
+        require_text .hoa/project-state.yaml             "next_milestone_status: active"
+
+        require_text .hoa/project-state.yaml             "next_milestone_authorized: true"
+
+        pass "A1-E002 constituído, autorizado e ativo"
+        ;;
+
+    verified)
+        require_text .hoa/project-state.yaml             "last_verified_milestone: A1-E002"
+
+        require_text .hoa/project-state.yaml             "last_verified_gate: scripts/verify_a1_e002.sh"
+
+        pass "A1-E002 registrado como marco verificado"
+        ;;
+
+    *)
+        fail             "estado de ciclo de vida A1-E002 inválido: $EXPERIMENT_STATUS"
+        ;;
+esac
 
 # ------------------------------------------------------------
 # 3. Fronteiras científicas e tecnológicas
