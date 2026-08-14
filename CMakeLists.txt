@@ -46,6 +46,7 @@ add_library(sister_atmos_precipitation_core STATIC
   src/precipitation/temporal_coverage.cpp
   src/precipitation/operational_sampling.cpp
   src/precipitation/surface_eligibility.cpp
+  src/precipitation/presentation_aggregation.cpp
 )
 
 target_include_directories(sister_atmos_precipitation_core
@@ -222,6 +223,25 @@ if(BUILD_TESTING)
   add_test(
     NAME sister_atmos_surface_eligibility_tests
     COMMAND sister_atmos_surface_eligibility_tests
+  )
+
+  add_executable(
+    sister_atmos_presentation_aggregation_tests
+    tests/presentation_aggregation_tests.cpp
+  )
+
+  target_link_libraries(
+    sister_atmos_presentation_aggregation_tests
+    PRIVATE sister_atmos_precipitation_core
+  )
+
+  sister_atmos_apply_project_options(
+    sister_atmos_presentation_aggregation_tests
+  )
+
+  add_test(
+    NAME sister_atmos_presentation_aggregation_tests
+    COMMAND sister_atmos_presentation_aggregation_tests
   )
 
   endif()
