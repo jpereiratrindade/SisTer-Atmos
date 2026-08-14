@@ -2,7 +2,7 @@ experiment:
   id: A1-E001
   title: Native precipitation scientific core
   phase: A1
-  status: designed
+  status: verified
 
 purpose:
   implement_scientific_domain: true
@@ -49,6 +49,39 @@ architecture:
   computational_data_horizon: docs/architecture/A-004-computational-data-horizon.md
   radar_does_not_expand_runtime_scope: true
   technology_adoption_requires_evidence: true
+
+verification:
+  gate: scripts/verify_a1_e001.sh
+
+  golden_cases_native_cpp23:
+    - GC-001
+    - GC-002
+    - GC-003
+
+  required_capabilities:
+    cxx23_language: verified
+    expected: verified
+    span: verified
+    to_underlying: verified
+
+  trial_capabilities:
+    mdspan:
+      policy: TRIAL
+      adoption: false
+
+  engineering_gates:
+    warnings_as_errors: verified
+    address_sanitizer: verified
+    undefined_behavior_sanitizer: verified
+    mutable_global_state_audit: verified
+    a0_configuration_isolation: verified
+
+  runtime_dependencies:
+    python: false
+    sister_clima: false
+    database: false
+    h3: false
+    http: false
 
 outputs:
   specification: specs/domain/native-precipitation-core.md
