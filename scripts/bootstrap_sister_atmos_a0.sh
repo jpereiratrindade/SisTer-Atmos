@@ -686,20 +686,19 @@ set -Eeuo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-EVIDENCE_DIR="$ROOT/docs/experiments/evidence/a0-baseline"
-EVIDENCE_FILE="$EVIDENCE_DIR/verification.txt"
 BUILD_DIR="$ROOT/.build/a0"
+RUN_EVIDENCE_FILE="$BUILD_DIR/verification.txt"
 
-mkdir -p "$EVIDENCE_DIR"
-: > "$EVIDENCE_FILE"
+mkdir -p "$BUILD_DIR"
+: > "$RUN_EVIDENCE_FILE"
 
-exec > >(tee -a "$EVIDENCE_FILE") 2>&1
+exec > >(tee -a "$RUN_EVIDENCE_FILE") 2>&1
 
 on_exit() {
   rc=$?
   if (( rc != 0 )); then
     printf '\nAtmos A0: FAIL (rc=%d)\n' "$rc"
-    printf 'Evidência preservada em: %s\n' "$EVIDENCE_FILE"
+    printf 'Evidência operacional preservada em: %s\n' "$RUN_EVIDENCE_FILE"
   fi
 }
 trap on_exit EXIT
@@ -775,7 +774,7 @@ require_text .hoa/project.yaml "authorized_decision"
 pass "Praxis scaffold"
 
 printf '\nAtmos A0: PASS\n'
-printf 'Evidência: %s\n' "$EVIDENCE_FILE"
+printf 'Evidência operacional: %s\n' "$RUN_EVIDENCE_FILE"
 trap - EXIT
 EOF
 
