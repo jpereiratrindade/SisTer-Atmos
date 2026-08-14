@@ -88,5 +88,15 @@ outputs:
   engineering_policy: docs/architecture/A-003-cpp23-engineering-policy.md
   implementation: src/precipitation
   public_api: include/sister/atmos/precipitation
-  tests: tests/precipitation_core_tests.cpp
+  tests:
+    - tests/precipitation_domain_types_tests.cpp
+    - tests/precipitation_native_samples_tests.cpp
+    - tests/precipitation_area_weighting_tests.cpp
   gate: scripts/verify_a1_e001.sh
+  evidence: docs/experiments/evidence/a1-e001/verification.txt
+
+promotion:
+  branch: feat/a1-e001-native-precipitation-core
+  target: main
+  commit: 7dc0115
+  method: fast_forward

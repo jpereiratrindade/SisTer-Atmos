@@ -2,7 +2,7 @@ version: "1.0"
 project: sister_atmos
 phase: A0
 title: "Constituição do SisTer Atmos"
-status: scaffolded
+status: verified
 intent:
   - "registrar identidade e fronteiras antes do porte climático"
   - "preservar Sister-Clima 2.5 como referência comportamental temporária"

@@ -1,8 +1,9 @@
 version: "1.0"
 id: sister_atmos
 kind: sister_subsystem
-phase: A0
+phase: A1
 purpose: "Inteligência climática e territorial para pesquisa."
+state_manifest: .hoa/project-state.yaml
 identity:
   name: "SisTer Atmos"
   repository: "sister-atmos"

@@ -20,6 +20,14 @@ require_cmd c++
 log "SisTer Atmos A0 — bootstrap constitucional"
 printf 'Destino: %s\n' "$ROOT"
 
+# Bootstrap é create-once: se o projeto já foi constituído, nunca o regride.
+# A manutenção/evolução deve ocorrer pelos gates e experimentos do projeto.
+if [[ -f "$ROOT/.hoa/project.yaml" ]] && \
+   grep -q '^id: sister_atmos$' "$ROOT/.hoa/project.yaml"; then
+  pass "SisTer Atmos já constituído; bootstrap A0 não altera projeto existente"
+  exit 0
+fi
+
 # Proteção contra sobrescrever um diretório que pertença a outro projeto.
 if [[ -d "$ROOT" ]]; then
   existing_non_git="$(find "$ROOT" -mindepth 1 -maxdepth 1 ! -name .git -print -quit 2>/dev/null || true)"
