@@ -14,6 +14,16 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(CTest)
 include(cmake/ProjectOptions.cmake)
 
+option(
+  SISTER_ATMOS_ENABLE_PRECIPITATION_CORE
+  "Enable the A1 native precipitation scientific core"
+  ON
+)
+
+if(SISTER_ATMOS_ENABLE_PRECIPITATION_CORE)
+  include(cmake/CheckCxx23Capabilities.cmake)
+endif()
+
 add_library(sister_atmos_core STATIC
   src/identity.cpp
 )
@@ -25,6 +35,8 @@ target_include_directories(sister_atmos_core
 
 target_compile_features(sister_atmos_core PUBLIC cxx_std_23)
 sister_atmos_apply_project_options(sister_atmos_core)
+
+if(SISTER_ATMOS_ENABLE_PRECIPITATION_CORE)
 
 add_library(sister_atmos_precipitation_core STATIC
   src/precipitation/domain_types.cpp
@@ -45,6 +57,8 @@ target_compile_features(
 sister_atmos_apply_project_options(
   sister_atmos_precipitation_core
 )
+
+endif()
 
 add_executable(atmos-a0
   src/main.cpp
@@ -70,6 +84,8 @@ if(BUILD_TESTING)
     NAME sister_atmos_identity_tests
     COMMAND sister_atmos_identity_tests
   )
+
+  if(SISTER_ATMOS_ENABLE_PRECIPITATION_CORE)
 
   add_executable(
     sister_atmos_precipitation_domain_types_tests
@@ -127,4 +143,6 @@ if(BUILD_TESTING)
     NAME sister_atmos_precipitation_area_weighting_tests
     COMMAND sister_atmos_precipitation_area_weighting_tests
   )
+
+  endif()
 endif()

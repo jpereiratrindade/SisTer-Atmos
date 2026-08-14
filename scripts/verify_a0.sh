@@ -59,7 +59,7 @@ require_text CMakeLists.txt "set(CMAKE_CXX_STANDARD 23)"
 require_text CMakeLists.txt "cxx_std_23"
 pass "C++23"
 
-cmake -S . -B "$BUILD_DIR" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
+cmake -S . -B "$BUILD_DIR"     -DBUILD_TESTING=ON     -DCMAKE_BUILD_TYPE=Debug     -DSISTER_ATMOS_ENABLE_PRECIPITATION_CORE=OFF
 cmake --build "$BUILD_DIR"     --target         sister_atmos_core         atmos-a0         sister_atmos_identity_tests
 pass "CMake"
 
