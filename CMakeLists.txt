@@ -43,6 +43,7 @@ add_library(sister_atmos_precipitation_core STATIC
   src/precipitation/native_samples.cpp
   src/precipitation/area_weighting.cpp
   src/precipitation/product_selection.cpp
+  src/precipitation/temporal_coverage.cpp
 )
 
 target_include_directories(sister_atmos_precipitation_core
@@ -162,6 +163,25 @@ if(BUILD_TESTING)
   add_test(
     NAME sister_atmos_product_selection_tests
     COMMAND sister_atmos_product_selection_tests
+  )
+
+  add_executable(
+    sister_atmos_temporal_coverage_tests
+    tests/temporal_coverage_tests.cpp
+  )
+
+  target_link_libraries(
+    sister_atmos_temporal_coverage_tests
+    PRIVATE sister_atmos_precipitation_core
+  )
+
+  sister_atmos_apply_project_options(
+    sister_atmos_temporal_coverage_tests
+  )
+
+  add_test(
+    NAME sister_atmos_temporal_coverage_tests
+    COMMAND sister_atmos_temporal_coverage_tests
   )
 
   endif()
