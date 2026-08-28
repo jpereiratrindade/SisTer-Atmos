@@ -6,6 +6,40 @@ info:
 x-sister-status: draft
 x-sister-runtime-note: "Canonical /_sister health and readiness endpoints belong to sister.runtime, not this Atmos API contract."
 paths:
+  /api/status:
+    get:
+      summary: Estado operacional e de evolução do Atmos
+      description: >-
+        Expõe separadamente readiness do escopo corrente e completude do produto.
+        O Atmos pode estar pronto para suas capacidades declaradas sem reivindicar
+        completude funcional.
+      responses:
+        "200":
+          description: Estado corrente do sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - system_id
+                  - operational_status
+                  - readiness_scope
+                  - complete
+                  - evolution_status
+                  - completion_policy
+                properties:
+                  system_id:
+                    const: sister_atmos
+                  operational_status:
+                    const: ready
+                  readiness_scope:
+                    const: current_declared_capabilities
+                  complete:
+                    const: false
+                  evolution_status:
+                    const: incomplete
+                  completion_policy:
+                    const: continuous_evolution
   /api/health:
     get:
       summary: Estado básico do serviço Atmos

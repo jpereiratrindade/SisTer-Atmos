@@ -8,6 +8,36 @@
 int main() {
     sister::atmos::http::Application app;
 
+
+    // Root is always a usable presentation shell, even while Atmos evolves.
+    {
+        const auto resp = app.handle("GET", "/");
+        assert(resp.status == 200);
+        assert(resp.content_type == "text/html; charset=utf-8");
+        assert(resp.body.find("SisTer Atmos") != std::string::npos);
+        assert(resp.body.find("PRONTO") != std::string::npos);
+        assert(resp.body.find("INCOMPLETO") != std::string::npos);
+        assert(resp.body.find("/assets/atmos.css") != std::string::npos);
+    }
+
+    // Presentation assets are served by the same runtime; no external frontend is required.
+    {
+        const auto resp = app.handle("GET", "/assets/atmos.css");
+        assert(resp.status == 200);
+        assert(resp.content_type == "text/css; charset=utf-8");
+        assert(resp.body.find(".shell") != std::string::npos);
+    }
+
+    // Readiness and completeness are orthogonal machine-readable states.
+    {
+        const auto resp = app.handle("GET", "/api/status");
+        assert(resp.status == 200);
+        assert(resp.body.find("\"operational_status\":\"ready\"") != std::string::npos);
+        assert(resp.body.find("\"complete\":false") != std::string::npos);
+        assert(resp.body.find("\"evolution_status\":\"incomplete\"") != std::string::npos);
+        assert(resp.body.find("\"completion_policy\":\"continuous_evolution\"") != std::string::npos);
+    }
+
     // Test GET /health
     {
         const auto resp = app.handle("GET", "/health");
@@ -36,6 +66,7 @@ int main() {
         assert(resp.status == 200);
         assert(resp.body.find("\"system_id\":\"sister_atmos\"") != std::string::npos);
         assert(resp.body.find("\"status\":\"ready\"") != std::string::npos);
+        assert(resp.body.find("\"scope\":\"current_declared_capabilities\"") != std::string::npos);
     }
 
     // Operational adapter must not publish a second OpenAPI authority.

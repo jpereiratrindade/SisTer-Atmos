@@ -83,6 +83,17 @@ grep -Fq '"status":"ok"' <<< "${health}"
 ready_body="$(run_runtime readiness)"
 grep -Fq '"system_id":"sister_atmos"' <<< "${ready_body}"
 grep -Fq '"status":"ready"' <<< "${ready_body}"
+grep -Fq '"scope":"current_declared_capabilities"' <<< "${ready_body}"
+
+home="$(curl --fail --silent --show-error --max-time 3 "http://127.0.0.1:${PORT}/")"
+grep -Fq '<title>SisTer Atmos</title>' <<< "${home}"
+grep -Fq 'PRONTO' <<< "${home}"
+grep -Fq 'INCOMPLETO' <<< "${home}"
+
+status_body="$(curl --fail --silent --show-error --max-time 3 "http://127.0.0.1:${PORT}/api/status")"
+grep -Fq '"operational_status":"ready"' <<< "${status_body}"
+grep -Fq '"complete":false' <<< "${status_body}"
+grep -Fq '"evolution_status":"incomplete"' <<< "${status_body}"
 
 run_runtime restart >/dev/null
 run_runtime status | grep -Eq '^running pid=[0-9]+$'

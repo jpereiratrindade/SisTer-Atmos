@@ -32,6 +32,21 @@ visão humana e deve ser validado contra esse manifesto.
 - warnings-as-errors, ASan e UBSan: gateados;
 - runtime sem dependência de Python, Sister-Clima, H3, banco, HTTP ou frontend no A1.
 
+## Pronto, mas incompleto
+
+Atmos separa **readiness operacional** de **completude funcional**. Cada corte
+promovido deve permanecer utilizável no escopo que declara, mesmo enquanto o
+produto continua incorporando novas capacidades. O runtime não deve fingir
+saúde quando uma capacidade declarada quebra; o que não pode ocorrer é tratar
+backlog futuro como indisponibilidade presente.
+
+- `GET /` oferece uma superfície HTML mínima e sempre utilizável;
+- `GET /_sister/ready` mede o escopo corrente;
+- `GET /api/status` explicita que readiness e completude são estados distintos.
+
+A decisão arquitetural completa está em
+`docs/architecture/ATMOS_READY_INCOMPLETE.md`.
+
 ## Princípio de migração
 
 Sister-Clima 2.5 permanece como `legacy_reference` e oráculo temporário de
