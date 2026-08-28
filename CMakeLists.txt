@@ -72,6 +72,38 @@ add_executable(atmos-a0
 target_link_libraries(atmos-a0 PRIVATE sister_atmos_core)
 sister_atmos_apply_project_options(atmos-a0)
 
+add_library(sister_atmos_http STATIC
+  src/http.cpp
+  src/http_server.cpp
+)
+
+target_include_directories(sister_atmos_http
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_compile_features(sister_atmos_http PUBLIC cxx_std_23)
+sister_atmos_apply_project_options(sister_atmos_http)
+
+add_executable(sister-atmos-http
+  src/main_http.cpp
+)
+
+target_link_libraries(sister-atmos-http
+  PRIVATE
+    sister_atmos_http
+    sister_atmos_core
+)
+
+if(SISTER_ATMOS_ENABLE_PRECIPITATION_CORE)
+  target_link_libraries(sister-atmos-http
+    PRIVATE
+      sister_atmos_precipitation_core
+  )
+endif()
+
+sister_atmos_apply_project_options(sister-atmos-http)
+
 if(BUILD_TESTING)
   add_executable(sister_atmos_identity_tests
     tests/identity_tests.cpp
@@ -88,6 +120,23 @@ if(BUILD_TESTING)
   add_test(
     NAME sister_atmos_identity_tests
     COMMAND sister_atmos_identity_tests
+  )
+
+  add_executable(sister_atmos_http_tests
+    tests/http_tests.cpp
+  )
+
+  target_link_libraries(sister_atmos_http_tests
+    PRIVATE sister_atmos_http
+  )
+
+  sister_atmos_apply_project_options(
+    sister_atmos_http_tests
+  )
+
+  add_test(
+    NAME sister_atmos_http_tests
+    COMMAND sister_atmos_http_tests
   )
 
   if(SISTER_ATMOS_ENABLE_PRECIPITATION_CORE)
