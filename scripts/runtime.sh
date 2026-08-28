@@ -20,30 +20,47 @@ load_deployment_binding() {
     return 1
   }
 
-  local system_id transport
+  local system_id match_count runtime_json transport listen port
   system_id="$(jq -er '.system_id' "${PROJECT_DIR}/.sister/component.json")"
-  transport="$(jq -er --arg id "${system_id}" \
-    '.components[] | select(.system_id == $id) | .runtime.transport' \
+
+  match_count="$(jq -er --arg id "${system_id}" \
+    '[.components[]? | select(.system_id == $id)] | length' \
     "${resolved}")"
-  [[ "${transport}" == "tcp" ]] || {
-    printf '[FAIL] runtime Atmos ainda requer binding TCP.\n' >&2
+  [[ "${match_count}" == "1" ]] || {
+    printf '[FAIL] deployment deve resolver exatamente um binding para %s; encontrados=%s\n' \
+      "${system_id}" "${match_count}" >&2
     return 1
   }
-  export ATMOS_ADDRESS
-  export ATMOS_PORT
-  ATMOS_ADDRESS="$(jq -er --arg id "${system_id}" \
-    '.components[] | select(.system_id == $id) | .runtime.listen' \
+
+  runtime_json="$(jq -cer --arg id "${system_id}" \
+    '.components[] | select(.system_id == $id) | .runtime' \
     "${resolved}")"
-  ATMOS_PORT="$(jq -er --arg id "${system_id}" \
-    '.components[] | select(.system_id == $id) | .runtime.port' \
-    "${resolved}")"
+
+  transport="$(jq -er '.transport' <<< "${runtime_json}")"
+  [[ "${transport}" == "tcp" ]] || {
+    printf '[FAIL] runtime Atmos requer binding TCP; recebido=%s\n' "${transport}" >&2
+    return 1
+  }
+
+  listen="$(jq -er '.listen | select(type == "string" and length > 0)' <<< "${runtime_json}")" || {
+    printf '[FAIL] deployment Atmos sem runtime.listen válido.\n' >&2
+    return 1
+  }
+
+  port="$(jq -er '.port | select(type == "number" and floor == . and . >= 1 and . <= 65535)' <<< "${runtime_json}")" || {
+    printf '[FAIL] deployment Atmos sem runtime.port válido (1..65535).\n' >&2
+    return 1
+  }
+
+  export ATMOS_ADDRESS="${listen}"
+  export ATMOS_PORT="${port}"
 }
 
 load_deployment_binding
 
 ATMOS_ADDRESS="${ATMOS_ADDRESS:-127.0.0.1}"
 ATMOS_PORT="${ATMOS_PORT:-8095}"
-ATMOS_STATE_DIR="${ATMOS_STATE_DIR:-${SISTER_RUNTIME_STATE_DIR:-${XDG_STATE_HOME:-${HOME}/.local/state}/sister/workstation/atmos}}"
+ATMOS_STATE_DIR="${ATMOS_STATE_DIR:-${SISTER_RUNTIME_STATE_DIR:-${XDG_STATE_HOME:-${HOME}/.local/state}/sister/atmos}}"
 ATMOS_RUNTIME_DIR="${ATMOS_RUNTIME_DIR:-${SISTER_RUNTIME_RUN_DIR:-${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/sister/atmos}}"
 export SISTER_RUNTIME_STATE_DIR="${ATMOS_STATE_DIR}"
 export SISTER_RUNTIME_RUN_DIR="${ATMOS_RUNTIME_DIR}"

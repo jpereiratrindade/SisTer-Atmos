@@ -19,5 +19,6 @@ printf 'gate=%s\n\n' "$GATE"
 
 "./$GATE"
 ./scripts/verify_project_governance.py
+./tests/component_runtime_contract_test.sh
 
 printf '\nAtmos current state: PASS\n'

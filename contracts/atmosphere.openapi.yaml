@@ -4,6 +4,7 @@ info:
   version: 0.0.0-a0
   description: Contrato inicial; endpoints climáticos ainda não implementados em A0.
 x-sister-status: draft
+x-sister-runtime-note: "Canonical /_sister health and readiness endpoints belong to sister.runtime, not this Atmos API contract."
 paths:
   /api/health:
     get:

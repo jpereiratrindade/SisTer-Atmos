@@ -38,12 +38,10 @@ int main() {
         assert(resp.body.find("\"status\":\"ready\"") != std::string::npos);
     }
 
-    // Test GET /openapi.yaml
+    // Operational adapter must not publish a second OpenAPI authority.
     {
         const auto resp = app.handle("GET", "/openapi.yaml");
-        assert(resp.status == 200);
-        assert(resp.content_type.find("yaml") != std::string::npos);
-        assert(resp.body.find("openapi:") != std::string::npos);
+        assert(resp.status == 404);
     }
 
     // Test 404 for unknown route

@@ -23,38 +23,6 @@ Response ready_response() {
     };
 }
 
-Response openapi_response() {
-    return Response{
-        .status = 200,
-        .content_type = "application/yaml; charset=utf-8",
-        .body = R"(openapi: 3.1.0
-info:
-  title: SisTer Atmos API
-  version: 0.1.0
-  description: Inteligência climática e territorial para pesquisa.
-paths:
-  /api/health:
-    get:
-      summary: Estado básico do serviço Atmos
-      responses:
-        "200":
-          description: Serviço saudável
-  /_sister/health:
-    get:
-      summary: Health check do ecossistema SisTer
-      responses:
-        "200":
-          description: Serviço saudável
-  /_sister/ready:
-    get:
-      summary: Readiness check do ecossistema SisTer
-      responses:
-        "200":
-          description: Serviço pronto
-)",
-    };
-}
-
 } // namespace
 
 Response Application::handle(const std::string_view method, const std::string_view path, [[maybe_unused]] const std::string_view req_body) const {
@@ -80,10 +48,6 @@ Response Application::handle(const std::string_view method, const std::string_vi
 
     if (path == "/_sister/ready") {
         return ready_response();
-    }
-
-    if (path == "/openapi.yaml" || path == "/contracts/atmosphere.openapi.yaml") {
-        return openapi_response();
     }
 
     return Response{

@@ -62,7 +62,11 @@ assert not (property_names(doc) & forbidden)
 PY
 
 grep -Fq 'SISTER_RESOLVED_DEPLOYMENT_FILE' "${RUNTIME}"
-grep -Fq '.components[] | select(.system_id == $id)' "${RUNTIME}"
+grep -Fq '.components[]' "${RUNTIME}"
+if grep -Fq '/sister/workstation/atmos' "${RUNTIME}"; then
+  printf '[FAIL] runtime Atmos conhece workstation no fallback local.\n' >&2
+  exit 1
+fi
 
 TMP="$(mktemp -d)"
 cleanup() {
@@ -80,6 +84,7 @@ mkdir -p "${TMP}/bin" "${TMP}/state" "${TMP}/run"
 
 cat > "${TMP}/fake-sister-atmos-http" <<'SH'
 #!/usr/bin/env bash
+printf '%s\n' "$@" > "${FAKE_ARGS_FILE:?}"
 trap 'exit 0' TERM INT
 while true; do
   sleep 1
@@ -107,6 +112,7 @@ run_runtime() {
   ATMOS_BINARY="${TMP}/fake-sister-atmos-http" \
   ATMOS_STATE_DIR="${TMP}/state" \
   ATMOS_RUNTIME_DIR="${TMP}/run" \
+  FAKE_ARGS_FILE="${TMP}/args" \
   PATH="${TMP}/bin:${PATH}" \
     "${RUNTIME}" "$@"
 }
@@ -124,7 +130,72 @@ if run_runtime status >/dev/null 2>&1; then
   exit 1
 fi
 
-# Regressão: precedência e herança de SISTER_RUNTIME_RUN_DIR e SISTER_RUNTIME_STATE_DIR
+# Prova real do binding resolvido: deployment vence overrides locais.
+cat > "${TMP}/deployment-valid.json" <<'JSON'
+{
+  "components": [
+    {
+      "system_id": "sister_atmos",
+      "runtime": {
+        "transport": "tcp",
+        "listen": "127.0.0.42",
+        "port": 39123
+      }
+    }
+  ]
+}
+JSON
+
+SISTER_RESOLVED_DEPLOYMENT_FILE="${TMP}/deployment-valid.json" \
+ATMOS_ADDRESS="192.0.2.1" \
+ATMOS_PORT="9" \
+  run_runtime start >/dev/null
+
+grep -Fxq -- '--bind' "${TMP}/args"
+grep -Fxq -- '127.0.0.42' "${TMP}/args"
+grep -Fxq -- '--port' "${TMP}/args"
+grep -Fxq -- '39123' "${TMP}/args"
+run_runtime stop >/dev/null
+
+assert_deployment_rejected() {
+  local fixture="$1"
+  rm -f "${TMP}/run/sister-atmos.pid" "${TMP}/args"
+  if SISTER_RESOLVED_DEPLOYMENT_FILE="${fixture}" run_runtime start >/dev/null 2>&1; then
+    printf '[FAIL] deployment inválido foi aceito: %s\n' "${fixture}" >&2
+    exit 1
+  fi
+  [[ ! -e "${TMP}/run/sister-atmos.pid" ]] || {
+    printf '[FAIL] deployment inválido mutou PID state: %s\n' "${fixture}" >&2
+    exit 1
+  }
+}
+
+cat > "${TMP}/deployment-missing.json" <<'JSON'
+{"components": []}
+JSON
+assert_deployment_rejected "${TMP}/deployment-missing.json"
+
+cat > "${TMP}/deployment-duplicate.json" <<'JSON'
+{
+  "components": [
+    {"system_id":"sister_atmos","runtime":{"transport":"tcp","listen":"127.0.0.1","port":39123}},
+    {"system_id":"sister_atmos","runtime":{"transport":"tcp","listen":"127.0.0.1","port":39124}}
+  ]
+}
+JSON
+assert_deployment_rejected "${TMP}/deployment-duplicate.json"
+
+cat > "${TMP}/deployment-transport.json" <<'JSON'
+{"components":[{"system_id":"sister_atmos","runtime":{"transport":"unix","listen":"/tmp/atmos.sock","port":39123}}]}
+JSON
+assert_deployment_rejected "${TMP}/deployment-transport.json"
+
+cat > "${TMP}/deployment-port.json" <<'JSON'
+{"components":[{"system_id":"sister_atmos","runtime":{"transport":"tcp","listen":"127.0.0.1","port":70000}}]}
+JSON
+assert_deployment_rejected "${TMP}/deployment-port.json"
+
+# Regressão: precedência e herança de SISTER_RUNTIME_RUN_DIR e SISTER_RUNTIME_STATE_DIR.
 SANDBOX_TMP="$(mktemp -d)"
 (
   export SISTER_RUNTIME_RUN_DIR="${SANDBOX_TMP}/run"
@@ -132,6 +203,7 @@ SANDBOX_TMP="$(mktemp -d)"
   mkdir -p "${SANDBOX_TMP}/run" "${SANDBOX_TMP}/state"
 
   ATMOS_BINARY="${TMP}/fake-sister-atmos-http" \
+  FAKE_ARGS_FILE="${TMP}/args" \
   PATH="${TMP}/bin:${PATH}" \
     "${RUNTIME}" start >/dev/null
 
@@ -147,9 +219,10 @@ SANDBOX_TMP="$(mktemp -d)"
   fi
 
   ATMOS_BINARY="${TMP}/fake-sister-atmos-http" \
+  FAKE_ARGS_FILE="${TMP}/args" \
   PATH="${TMP}/bin:${PATH}" \
     "${RUNTIME}" stop >/dev/null
 )
 rm -rf "${SANDBOX_TMP}"
 
-printf '[PASS] sister.component/1.0.0 + sister.runtime/1.0.0 smoke local (atmos).\n'
+printf '[PASS] sister.component/1.0.0 + sister.runtime/1.0.0 + resolved deployment contract (atmos).\n'

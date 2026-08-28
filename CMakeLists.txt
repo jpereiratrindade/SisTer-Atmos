@@ -105,6 +105,21 @@ endif()
 sister_atmos_apply_project_options(sister-atmos-http)
 
 if(BUILD_TESTING)
+  find_program(BASH_EXECUTABLE bash REQUIRED)
+
+  add_test(
+    NAME sister_atmos_component_runtime_contract_test
+    COMMAND "${BASH_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/component_runtime_contract_test.sh"
+  )
+
+  add_test(
+    NAME sister_atmos_runtime_e2e_test
+    COMMAND
+      "${CMAKE_COMMAND}" -E env
+      "ATMOS_BINARY=$<TARGET_FILE:sister-atmos-http>"
+      "${BASH_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/runtime_e2e_test.sh"
+  )
+
   add_executable(sister_atmos_identity_tests
     tests/identity_tests.cpp
   )
