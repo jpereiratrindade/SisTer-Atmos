@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071e38">
+  <title>SisTer Atmos</title>
+  <link rel="stylesheet" href="/assets/atmos.css">
+  <link rel="stylesheet" href="/assets/atmos-overrides.css">
+  <script src="/assets/atmos.js" defer></script>
+</head>
+<body>
+  <main class="system-layout">
+    <header class="app-topbar">
+      <a class="mini-brand" href="#explorador" data-view-link="explorador" aria-label="Atmos — início">
+        <svg class="brand-symbol" viewBox="0 0 64 64" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="2.8">
+            <path d="M32 5 55 18v28L32 59 9 46V18z"/><path d="M32 5v54M9 18l46 28M55 18 9 46"/>
+          </g>
+          <g fill="currentColor"><circle cx="32" cy="5" r="4"/><circle cx="55" cy="18" r="4"/><circle cx="55" cy="46" r="4"/><circle cx="32" cy="59" r="4"/><circle cx="9" cy="46" r="4"/><circle cx="9" cy="18" r="4"/><circle cx="32" cy="32" r="5"/></g>
+        </svg>
+        <span class="brand-text"><span class="brand-super">SisTer</span><strong>Atmos</strong></span>
+      </a>
+      <div class="top-center-label">Atmos · Inteligência climática e territorial</div>
+      <div class="top-context">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span class="context-pill">PRONTO · EM EVOLUÇÃO</span>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <nav aria-label="Seções do Atmos">
+        <a href="#explorador" class="selected" data-view-link="explorador"><span>⌁</span>Explorador climático</a>
+        <a href="#operacao" data-view-link="operacao"><span>◇</span>Operação territorial RS</a>
+        <a href="#metodo" data-view-link="metodo"><span>▤</span>Fontes e método</a>
+      </nav>
+      <section class="sidebar-note">
+        <strong>Estimativas modeladas</strong>
+        <p>Os resultados não são medições de pluviômetro nem alertas oficiais.</p>
+      </section>
+      <footer class="sidebar-footer">C++23 · sister_atmos</footer>
+    </aside>
+
+    <div class="workspace">
+      <section class="view active" id="view-explorador">
+        <article class="panel page-heading">
+          <div>
+            <span class="eyebrow">Explorador nacional</span>
+            <h1>Precipitação em contexto</h1>
+            <p>Consulte uma localidade, compare produtos e acompanhe a cobertura efetiva da análise.</p>
+          </div>
+          <div class="capability-state"><span>PRONTO</span><strong>INCOMPLETO</strong></div>
+        </article>
+
+        <div class="analysis-layout">
+          <aside class="panel filters-panel">
+            <div class="panel-title"><div><h2>Filtros da análise</h2><small>Local, produto e período</small></div></div>
+            <form id="analysis-form">
+              <label class="field location-field"><span>Localidade</span>
+                <div class="search-control"><input id="location-search" autocomplete="off" placeholder="Busque um município" required><button type="button" id="search-location" aria-label="Buscar">⌕</button></div>
+              </label>
+              <div id="location-results" class="location-results" role="listbox" hidden></div>
+              <input type="hidden" id="latitude"><input type="hidden" id="longitude">
+              <div id="selected-location" class="selected-location" hidden></div>
+
+              <fieldset><legend>Produto</legend>
+                <div class="segmented">
+                  <label><input type="radio" name="product" value="best_match" checked><span>Best Match</span></label>
+                  <label><input type="radio" name="product" value="era5"><span>ERA5</span></label>
+                  <label><input type="radio" name="product" value="nasa_power"><span>NASA</span></label>
+                </div>
+              </fieldset>
+              <label class="field"><span>Período rápido</span><select id="period-preset"><option value="7">Últimos 7 dias</option><option value="30" selected>Últimos 30 dias</option><option value="90">Últimos 90 dias</option><option value="month">Mês atual</option></select></label>
+              <div class="date-grid">
+                <label class="field"><span>Início</span><input type="date" id="start-date" required></label>
+                <label class="field"><span>Fim</span><input type="date" id="end-date" required></label>
+              </div>
+              <button class="primary-action" type="submit"><span>⌁</span>Analisar precipitação</button>
+            </form>
+            <div class="method-hint" id="method-hint"><strong>Best Match dinâmico</strong><p>Prioriza atualidade. O produto efetivo pode variar conforme data e local.</p></div>
+          </aside>
+
+          <div class="results-area">
+            <div id="welcome-state" class="panel empty-state">
+              <div class="weather-orbit" aria-hidden="true"><span>☂</span></div>
+              <h2>Escolha uma localidade</h2>
+              <p>Busque qualquer município brasileiro ou localidade mundial para iniciar uma análise rastreável.</p>
+            </div>
+            <div id="loading-state" class="panel empty-state" hidden><div class="loader"></div><h2>Consultando a fonte</h2><p>Validando produto e cobertura temporal…</p></div>
+            <div id="error-state" class="panel error-state" hidden><strong>Não foi possível concluir a análise</strong><p id="error-message"></p></div>
+
+            <section id="analysis-results" hidden>
+              <article class="panel result-header">
+                <div><span class="eyebrow">Resultado governado</span><h2 id="result-place">—</h2><p id="result-attribution">—</p></div>
+                <div class="result-actions"><span class="product-badge" id="product-badge">—</span><button class="secondary-action" id="download-csv">↓ CSV</button></div>
+              </article>
+              <div class="summary-grid">
+                <article><span>Volume acumulado</span><strong id="kpi-total">—</strong><small>no período efetivo</small></article>
+                <article><span>Máxima diária</span><strong id="kpi-max">—</strong><small>maior valor diário</small></article>
+                <article><span>Média diária</span><strong id="kpi-mean">—</strong><small>dias disponíveis</small></article>
+                <article><span>Dias chuvosos</span><strong id="kpi-rainy">—</strong><small>≥ 1 mm</small></article>
+              </div>
+              <article class="coverage-strip" id="coverage-strip"><span class="coverage-icon">✓</span><div><strong id="coverage-title">Cobertura completa</strong><p id="coverage-detail">—</p></div></article>
+              <div class="chart-grid">
+                <article class="panel chart-panel"><div class="panel-title"><div><h2>Distribuição diária</h2><small>Precipitação em milímetros</small></div></div><div class="chart" id="daily-chart"></div></article>
+                <article class="panel chart-panel"><div class="panel-title"><div><h2>Curva acumulada</h2><small>Evolução no período efetivo</small></div></div><div class="chart" id="accumulated-chart"></div></article>
+              </div>
+              <article class="panel map-panel">
+                <div class="panel-title"><div><h2>Território e distribuição H3</h2><small>Malha IBGE + síntese operacional r6→r5</small></div><div class="result-actions"><button class="secondary-action" id="download-spatial" hidden>↓ H3 GeoJSON</button><button class="secondary-action" id="download-geojson" hidden>↓ Limite</button></div></div>
+                <div class="territory-map" id="territory-map"><div class="map-loading">Carregando limite municipal…</div></div>
+                <p class="map-note" id="map-note">Best Match: média de pontos únicos H3 r6 em células visuais r5, recortadas pelo centro no município. É síntese amostral, não superfície meteorológica nativa.</p>
+              </article>
+              <article class="panel data-panel">
+                <div class="panel-title"><div><h2>Série analítica</h2><small>Valores diários preservados</small></div><button class="text-action" id="toggle-table">Mostrar tabela</button></div>
+                <div class="table-wrap" id="table-wrap" hidden><table><thead><tr><th>Data</th><th>Chuva (mm)</th><th>Acumulado (mm)</th><th>Faixa descritiva</th></tr></thead><tbody id="daily-table"></tbody></table></div>
+              </article>
+              <article class="panel provenance-panel"><div class="panel-title"><div><h2>Proveniência</h2><small>Identidade do produto e transformação</small></div></div><dl id="provenance-list"></dl></article>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-operacao">
+        <article class="panel page-heading"><div><span class="eyebrow">Operação consolidada · Rio Grande do Sul</span><h1>Comparar espaços territoriais</h1><p>Selecione municípios por bioma predominante, COREDE ou Região Funcional e compare sob o mesmo contexto.</p></div></article>
+        <article class="panel territorial-selector">
+          <div class="territorial-grid">
+            <label class="field"><span>Recorte territorial</span><select id="territory-scope"><option value="municipio">Municípios</option><option value="bioma_predominante">Biomas predominantes</option><option value="corede">COREDEs</option><option value="regiao_funcional">Regiões funcionais</option></select></label>
+            <label class="field"><span>Unidade</span><select id="territory-unit"><option value="">Carregando catálogo…</option></select></label>
+            <label class="field"><span>Municípios do recorte</span><select id="territory-municipalities" multiple size="4"></select></label>
+            <button type="button" class="secondary-action" id="add-territory-selection">Adicionar à comparação</button>
+          </div>
+          <p class="map-note" id="territory-catalog-status">Classificação materializada a partir do IBGE e do Atlas Socioeconômico do RS.</p>
+        </article>
+        <article class="panel compare-builder">
+          <form id="compare-form"><label class="field"><span>Adicionar localidade</span><div class="search-control"><input id="compare-search" autocomplete="off" placeholder="Ex.: Bagé"><button type="button" id="compare-search-button">⌕</button></div></label><div id="compare-results" class="location-results" hidden></div><div id="compare-locations" class="compare-chips"></div><div class="date-grid"><label class="field"><span>Início</span><input type="date" id="compare-start"></label><label class="field"><span>Fim</span><input type="date" id="compare-end"></label></div><button class="primary-action" type="submit">Comparar período</button></form>
+        </article>
+        <div id="compare-empty" class="panel empty-state compact"><h2>Adicione de duas a quatro localidades</h2><p>Os totais são comparados sob o mesmo contexto temporal e o mesmo produto ERA5.</p></div>
+        <div id="compare-output" class="compare-grid" hidden></div>
+      </section>
+
+      <section class="view" id="view-metodo">
+        <article class="panel page-heading"><div><span class="eyebrow">Transparência científica</span><h1>Fontes, método e limites</h1><p>Como interpretar o que o Atmos apresenta — e o que ele deliberadamente não afirma.</p></div></article>
+        <div class="method-grid">
+          <article class="panel method-card"><span class="source-mark blue">BM</span><h2>Open-Meteo Best Match</h2><p>Combina modelos disponíveis para priorizar atualidade. É adequado à leitura operacional, mas pode mudar de produto e resolução.</p><ul><li>Produto usado explícito</li><li>Série pontual diária</li><li>CC BY 4.0</li></ul></article>
+          <article class="panel method-card"><span class="source-mark teal">E5</span><h2>ERA5 consolidado</h2><p>Reanálise de produto estável para comparações históricas. Pode não cobrir os dias mais recentes solicitados.</p><ul><li>Produto e grade constantes</li><li>Período efetivo explícito</li><li>CC BY 4.0</li></ul></article>
+          <article class="panel method-card"><span class="source-mark navy">NP</span><h2>NASA POWER</h2><p>PRECTOTCORR em série pontual associada a produtos como MERRA-2, usando o padrão temporal LST.</p><ul><li>Produto explícito</li><li>Grade aproximada 0,5° × 0,625°</li><li>Sem superfície H3</li></ul></article>
+          <article class="panel method-card warning"><span class="source-mark amber">!</span><h2>Limite de interpretação</h2><p>Precipitação modelada não equivale a uma observação direta em estação meteorológica.</p><ul><li>Não é alerta oficial</li><li>Não substitui validação local</li><li>Ausência não vira zero</li></ul></article>
+        </div>
+        <article class="panel contract-panel"><h2>Contrato do Atmos</h2><div class="contract-flow"><div><b>1</b><span>Solicitação</span><small>local, produto, período</small></div><i>→</i><div><b>2</b><span>Aquisição</span><small>fonte governada</small></div><i>→</i><div><b>3</b><span>Análise</span><small>cobertura comum</small></div><i>→</i><div><b>4</b><span>Resultado</span><small>dados + proveniência</small></div></div></article>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

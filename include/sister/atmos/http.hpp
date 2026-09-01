@@ -2,7 +2,10 @@
 #ifndef SISTER_ATMOS_HTTP_HPP
 #define SISTER_ATMOS_HTTP_HPP
 
+#include "sister/atmos/climate_service.hpp"
+
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <string_view>
 
@@ -16,9 +19,13 @@ struct Response {
 
 class Application {
 public:
-    Application() noexcept = default;
+    Application();
+    explicit Application(std::shared_ptr<const ClimateProvider> provider) noexcept;
 
     [[nodiscard]] Response handle(std::string_view method, std::string_view path, std::string_view body = {}) const;
+
+private:
+    std::shared_ptr<const ClimateProvider> provider_;
 };
 
 [[nodiscard]] std::string reason_phrase(int status);

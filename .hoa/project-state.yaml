@@ -3,13 +3,13 @@ project: sister_atmos
 governance_method: praxis-governed-engineering/0.1
 bootstrap_script: scripts/bootstrap_sister_atmos_a0.sh
 bootstrap_policy: create_once
-phase: A1
+phase: A2
 status: active
 last_verified_milestone: A1-E003
 last_verified_commit: fad18c1
 last_verified_gate: scripts/verify_a1_e003.sh
 last_verified_evidence: docs/experiments/evidence/a1-e003/verification.txt
 next_milestone: A2-MVP-001
-next_milestone_status: proposed
-next_milestone_authorized: false
-updated_on: "2026-08-14"
+next_milestone_status: active
+next_milestone_authorized: true
+updated_on: "2026-09-01"

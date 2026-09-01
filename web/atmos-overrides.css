@@ -1,0 +1,19 @@
+/* Small capability-specific refinements kept separate from the shared shell. */
+.segmented { grid-template-columns: repeat(3, 1fr); }
+
+.map-panel { padding: 18px; margin-bottom: 12px; }
+.territory-map { height: 330px; margin-top: 14px; overflow: hidden; border: 1px solid var(--line); border-radius: 9px; background: linear-gradient(145deg, #eef7fa, #f8fbfd); }
+.territory-map svg { display: block; width: 100%; height: 100%; }
+.territory-shape { fill: rgba(26, 125, 196, .16); stroke: #126faf; stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+.territory-point { fill: #e8a733; stroke: #fff; stroke-width: 3; vector-effect: non-scaling-stroke; }
+.spatial-cell { stroke: rgba(7, 30, 56, .5); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.source-mark.navy { background: var(--navy-2); }
+.method-grid { grid-template-columns: repeat(4, 1fr); }
+.map-loading { display: grid; place-items: center; height: 100%; color: var(--muted); font-size: .75rem; }
+.map-note { margin: 9px 2px 0; color: var(--muted); font-size: .65rem; }
+.territorial-selector { padding: 20px; margin-bottom: 14px; }
+.territorial-grid { display: grid; grid-template-columns: 1fr 1fr 1.5fr auto; gap: 12px; align-items: end; }
+.territorial-grid select[multiple] { min-height: 84px; }
+@media (max-width: 1000px) { .territorial-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 1000px) { .method-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .territorial-grid, .method-grid { grid-template-columns: 1fr; } }

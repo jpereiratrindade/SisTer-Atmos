@@ -9,10 +9,10 @@
 ## Estado atual
 
 <!-- praxis-state:start -->
-- Fase atual: **A1 — núcleo científico nativo**.
+- Fase atual: **A2 — produto climático vertical**.
 - Último marco verificado: **A1-E003 — Spatial Representation & Operational Sampling** (`fad18c1`).
-- Próximo marco proposto: **A2-MVP-001 — Governed Precipitation Explorer**.
-- A2-MVP-001 está **proposto e ainda não autorizado**.
+- Marco ativo: **A2-MVP-001 — Governed Precipitation Explorer**.
+- A2-MVP-001 está **constituído, autorizado e ativo**.
 <!-- praxis-state:end -->
 
 A fonte canônica desse estado é `.hoa/project-state.yaml`. O README é uma
@@ -31,6 +31,16 @@ visão humana e deve ser validado contra esse manifesto.
 - amostragem operacional, elegibilidade de superfície e agregação de apresentação permanecem semanticamente distintas;
 - warnings-as-errors, ASan e UBSan: gateados;
 - runtime sem dependência de Python, Sister-Clima, H3, banco, HTTP ou frontend no A1.
+
+## Governed Precipitation Explorer
+
+O corte A2 ativo oferece busca de localidades, séries diárias de precipitação
+Best Match, ERA5 e NASA POWER PRECTOTCORR, período solicitado versus efetivo, ausências explícitas,
+KPIs, gráficos, tabela, exportação CSV, proveniência, limite municipal IBGE,
+distribuição operacional H3 r6→r5, exportação GeoJSON e comparação territorial
+do RS por município, bioma predominante, COREDE e Região Funcional.
+O backend de aquisição e análise é C++23; o frontend HTML/CSS/JS é servido pelo
+mesmo runtime e adota a linguagem visual do SisTer Nexo.
 
 ## Pronto, mas incompleto
 

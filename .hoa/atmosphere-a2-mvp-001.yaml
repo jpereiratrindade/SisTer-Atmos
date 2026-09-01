@@ -1,0 +1,55 @@
+experiment:
+  id: A2-MVP-001
+  title: Governed Precipitation Explorer
+  phase: A2
+
+status: active
+authorized: true
+authorized_on: "2026-09-01"
+authorization_source: user_request
+
+purpose:
+  vertical_slice: true
+  governed_acquisition: true
+  native_http_api: true
+  native_frontend: true
+
+scope:
+  products:
+    - best_match_dynamic
+    - era5
+    - nasa_power_merra2
+  capabilities:
+    - location_search
+    - daily_point_precipitation
+    - temporal_coverage
+    - requested_and_used_product_identity
+    - analytical_kpis
+    - csv_export
+    - provenance
+    - location_comparison
+    - municipality_boundary
+    - operational_h3_sampling_r6_to_r5
+    - h3_geojson_export
+    - rs_biome_corede_functional_region_selection
+
+scientific_boundaries:
+  station_observation_claimed: false
+  official_alert_claimed: false
+  native_surface_claimed: false
+  missing_values_become_zero: false
+  point_series_is_not_h3_surface: true
+
+architecture:
+  backend: C++23
+  provider: Open-Meteo
+  frontend: native_html_css_javascript
+  visual_identity_reference: sister_nexo
+  runtime_python: false
+  runtime_sister_clima: false
+  runtime_nexo: false
+  h3_library: uber_h3_4_5_0
+
+verification:
+  status: active_pending_promotion
+  gate: scripts/verify_a2_mvp_001.sh

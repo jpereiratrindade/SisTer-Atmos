@@ -1,58 +1,142 @@
 openapi: 3.1.0
 info:
   title: SisTer Atmos API
-  version: 0.0.0-a0
-  description: Contrato inicial; endpoints climáticos ainda não implementados em A0.
-x-sister-status: draft
-x-sister-runtime-note: "Canonical /_sister health and readiness endpoints belong to sister.runtime, not this Atmos API contract."
+  version: 0.2.0-a2
+  description: API do explorador governado de precipitação do SisTer Atmos.
+x-sister-status: active
+x-sister-runtime-note: Canonical /_sister endpoints belong to sister.runtime.
 paths:
   /api/status:
     get:
-      summary: Estado operacional e de evolução do Atmos
-      description: >-
-        Expõe separadamente readiness do escopo corrente e completude do produto.
-        O Atmos pode estar pronto para suas capacidades declaradas sem reivindicar
-        completude funcional.
+      summary: Estado operacional e capacidades declaradas
       responses:
         "200":
-          description: Estado corrente do sistema
+          description: Estado corrente
           content:
             application/json:
-              schema:
-                type: object
-                required:
-                  - system_id
-                  - operational_status
-                  - readiness_scope
-                  - complete
-                  - evolution_status
-                  - completion_policy
-                properties:
-                  system_id:
-                    const: sister_atmos
-                  operational_status:
-                    const: ready
-                  readiness_scope:
-                    const: current_declared_capabilities
-                  complete:
-                    const: false
-                  evolution_status:
-                    const: incomplete
-                  completion_policy:
-                    const: continuous_evolution
+              schema: { $ref: "#/$defs/status" }
   /api/health:
     get:
-      summary: Estado básico do serviço Atmos
+      summary: Estado básico do serviço
       responses:
         "200":
           description: Serviço saudável
+  /api/locations:
+    get:
+      summary: Busca localidades pelo nome
+      operationId: location_search
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema: { type: string, minLength: 2 }
+      responses:
+        "200":
+          description: Localidades encontradas
           content:
             application/json:
               schema:
                 type: object
-                required: [system_id, status]
+                required: [locations]
                 properties:
-                  system_id:
-                    const: sister_atmos
-                  status:
-                    const: ok
+                  locations:
+                    type: array
+                    items: { $ref: "#/$defs/location" }
+        "400": { description: Consulta inválida }
+        "502": { description: Falha da fonte de geocodificação }
+  /api/analyses/precipitation:
+    post:
+      summary: Executa análise pontual de precipitação diária
+      operationId: analyze_precipitation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/$defs/analysis_request" }
+      responses:
+        "200":
+          description: Análise com cobertura e proveniência
+          content:
+            application/json:
+              schema: { $ref: "./climate_analysis.schema.json" }
+        "400": { description: Solicitação inválida }
+        "502": { description: Falha da fonte meteorológica }
+  /api/territories/municipality:
+    get:
+      summary: Resolve município brasileiro e retorna malha simplificada do IBGE
+      parameters:
+        - { name: name, in: query, required: true, schema: { type: string } }
+        - { name: admin1, in: query, required: true, schema: { type: string } }
+      responses:
+        "200": { description: Código, fonte e limite GeoJSON municipal }
+        "502": { description: Falha do provedor territorial }
+  /api/analyses/precipitation/spatial:
+    post:
+      summary: Distribuição operacional H3 sobre o município
+      description: >-
+        Amostra centros H3 r6, agrega por média em r5 e adapta para r5→r5
+        quando o recorte ultrapassa 800 amostras. Não reivindica superfície nativa.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/$defs/spatial_analysis_request" }
+      responses:
+        "200": { description: Células H3, precipitação e proveniência espacial }
+        "400": { description: Solicitação inválida }
+        "502": { description: Falha da aquisição espacial }
+$defs:
+  status:
+    type: object
+    required:
+      - system_id
+      - operational_status
+      - readiness_scope
+      - complete
+      - evolution_status
+      - completion_policy
+      - capabilities
+    properties:
+      system_id: { const: sister_atmos }
+      operational_status: { const: ready }
+      readiness_scope: { const: current_declared_capabilities }
+      complete: { const: false }
+      evolution_status: { const: incomplete }
+      completion_policy: { const: continuous_evolution }
+      capabilities:
+        type: array
+        items: { type: string }
+  location:
+    type: object
+    required: [id, name, latitude, longitude]
+    properties:
+      id: { type: string }
+      name: { type: string }
+      admin1: { type: string }
+      country: { type: string }
+      latitude: { type: number, minimum: -90, maximum: 90 }
+      longitude: { type: number, minimum: -180, maximum: 180 }
+  analysis_request:
+    type: object
+    additionalProperties: false
+    required: [latitude, longitude, start_date, end_date, requested_product]
+    properties:
+      latitude: { type: number, minimum: -90, maximum: 90 }
+      longitude: { type: number, minimum: -180, maximum: 180 }
+      start_date: { type: string, format: date }
+      end_date: { type: string, format: date }
+      requested_product:
+        type: string
+        enum: [best_match, era5, nasa_power]
+  spatial_analysis_request:
+    type: object
+    additionalProperties: false
+    required: [latitude, longitude, start_date, end_date, requested_product, municipality_name, admin1]
+    properties:
+      latitude: { type: number, minimum: -90, maximum: 90 }
+      longitude: { type: number, minimum: -180, maximum: 180 }
+      start_date: { type: string, format: date }
+      end_date: { type: string, format: date }
+      requested_product: { const: best_match }
+      municipality_name: { type: string, minLength: 1 }
+      admin1: { type: string, minLength: 1 }

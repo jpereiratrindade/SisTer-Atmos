@@ -10,7 +10,9 @@
 #include <poll.h>
 #include <stdexcept>
 #include <sys/socket.h>
+#include <thread>
 #include <unistd.h>
+#include <vector>
 
 namespace sister::atmos::http {
 namespace {
@@ -49,12 +51,8 @@ void parse_request_line(std::string_view raw, std::string& method, std::string& 
     method = std::string{req_line.substr(0, sp1)};
     std::string_view full_path = req_line.substr(sp1 + 1, sp2 - sp1 - 1);
 
-    auto q_pos = full_path.find('?');
-    if (q_pos != std::string_view::npos) {
-        path = std::string{full_path.substr(0, q_pos)};
-    } else {
-        path = std::string{full_path};
-    }
+    // Preserve the query string for application-level routing and decoding.
+    path = std::string{full_path};
 
     auto body_pos = raw.find("\r\n\r\n");
     if (body_pos != std::string_view::npos) {
@@ -111,21 +109,8 @@ int Server::run() {
               << options_.bind_address << ':' << options_.port << "/\n";
     std::cout.flush();
 
-    while (g_stop == 0) {
-        pollfd ready{.fd = server_fd, .events = POLLIN, .revents = 0};
-        const int poll_rc = ::poll(&ready, 1, 250);
-        if (poll_rc < 0) {
-            if (errno == EINTR) continue;
-            throw std::runtime_error(std::string{"Falha no poll: "} + std::strerror(errno));
-        }
-        if (poll_rc == 0) continue;
-
-        const int client_fd = ::accept(server_fd, nullptr, nullptr);
-        if (client_fd < 0) {
-            if (errno == EINTR) continue;
-            throw std::runtime_error(std::string{"Falha no accept: "} + std::strerror(errno));
-        }
-
+    std::vector<std::jthread> workers;
+    const auto handle_client = [this](const int client_fd) {
         try {
             std::string raw_request;
             raw_request.resize(32768U);
@@ -145,11 +130,28 @@ int Server::run() {
                 .content_type = "application/json; charset=utf-8",
                 .body = R"({"error":"internal_error","message":")" + std::string{e.what()} + R"("})",
             };
-            try {
-                write_all(client_fd, serialize_response(err_resp));
-            } catch (...) {}
+            try { write_all(client_fd, serialize_response(err_resp)); }
+            catch (...) {}
         }
         ::close(client_fd);
+    };
+
+    while (g_stop == 0) {
+        pollfd ready{.fd = server_fd, .events = POLLIN, .revents = 0};
+        const int poll_rc = ::poll(&ready, 1, 250);
+        if (poll_rc < 0) {
+            if (errno == EINTR) continue;
+            throw std::runtime_error(std::string{"Falha no poll: "} + std::strerror(errno));
+        }
+        if (poll_rc == 0) continue;
+
+        const int client_fd = ::accept(server_fd, nullptr, nullptr);
+        if (client_fd < 0) {
+            if (errno == EINTR) continue;
+            throw std::runtime_error(std::string{"Falha no accept: "} + std::strerror(errno));
+        }
+
+        workers.emplace_back(handle_client, client_fd);
     }
 
     ::close(server_fd);

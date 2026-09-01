@@ -9,6 +9,11 @@
     "used_product",
     "requested_period",
     "effective_period",
+    "complete",
+    "available_days",
+    "missing_dates",
+    "summary",
+    "daily",
     "provenance"
   ],
   "properties": {
@@ -17,6 +22,34 @@
     "used_product": { "type": "string", "minLength": 1 },
     "requested_period": { "$ref": "#/$defs/period" },
     "effective_period": { "$ref": "#/$defs/period" },
+    "complete": { "type": "boolean" },
+    "available_days": { "type": "integer", "minimum": 1 },
+    "missing_dates": {
+      "type": "array",
+      "items": { "type": "string", "format": "date" }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total_mm", "maximum_daily_mm", "mean_daily_mm", "rainy_days"],
+      "properties": {
+        "total_mm": { "type": "number", "minimum": 0 },
+        "maximum_daily_mm": { "type": "number", "minimum": 0 },
+        "mean_daily_mm": { "type": "number", "minimum": 0 },
+        "rainy_days": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "daily": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["date", "precipitation_mm", "accumulated_mm"],
+        "properties": {
+          "date": { "type": "string", "format": "date" },
+          "precipitation_mm": { "type": "number", "minimum": 0 },
+          "accumulated_mm": { "type": "number", "minimum": 0 }
+        }
+      }
+    },
     "provenance": { "type": "object" }
   },
   "$defs": {

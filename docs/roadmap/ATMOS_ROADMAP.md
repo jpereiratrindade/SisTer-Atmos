@@ -65,7 +65,7 @@ Escopo verificado:
 
 A1-E003 deve encerrar a fase A1 ao tornar nativos os oito Golden Cases do baseline.
 
-## Próximo marco proposto — A2-MVP-001
+## Marco ativo — A2-MVP-001
 
 **Governed Precipitation Explorer**.
 
@@ -89,7 +89,7 @@ Escopo mínimo esperado:
 Persistência, autenticação, múltiplos providers e integração operacional com Nexo
 não são pré-condições do primeiro MVP, salvo evidência posterior em contrário.
 
-A2-MVP-001 está **proposto e ainda não autorizado**.
+A2-MVP-001 está **constituído, autorizado e ativo** desde 2026-09-01.
 
 ## Fronteira posterior ao núcleo científico
 

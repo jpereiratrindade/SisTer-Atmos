@@ -7,7 +7,7 @@
   "domain": "climate_intelligence",
   "language": "C++23",
   "description": "Inteligência climática e territorial para pesquisa.",
-  "phase": "A1",
+  "phase": "A2",
   "runtime_dependency_on_praxis": false,
   "integration": {
     "nexo": {
