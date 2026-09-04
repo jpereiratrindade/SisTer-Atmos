@@ -37,5 +37,14 @@
       "readiness"
     ],
     "state_policy": "stateless"
-  }
+  },
+  "interaction_surfaces": [
+    {
+      "surface_id": "atmos-precipitation",
+      "label": "Atmos",
+      "purpose": "Consultar e comparar precipitação em contexto territorial",
+      "path": "/",
+      "access_class": "research"
+    }
+  ]
 }
